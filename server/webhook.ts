@@ -2,7 +2,7 @@ const {
     dialogflow,
     Image,
 } = require('actions-on-google')
-const dialogApp = dialogflow({debug: true});
+const dialogApp = dialogflow();
 
 // Handle the Dialogflow intent named 'favorite color'.
 // The intent collects a parameter named 'color'.

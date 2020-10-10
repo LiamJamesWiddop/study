@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const { dialogflow, Image, } = require('actions-on-google');
-const dialogApp = dialogflow({ debug: true });
+const dialogApp = dialogflow();
 dialogApp.intent('Quiz', (conv, { topic }) => {
     console.log(topic);
     conv.close('Your lucky number is 7!');
