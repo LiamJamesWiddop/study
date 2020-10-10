@@ -21,15 +21,15 @@ app2.get("/webhook", async (req, res) => {
     let result = await webhook_1.default.getBest();
     res.send(result);
 });
+app2.get("/trial", (req, res) => {
+    res.send("it actually works tho...");
+});
 app2.use("/", express.static(path.resolve(__dirname, "../../dist/")));
 app2.use(history({
     disableDotRule: true,
     verbose: true
 }));
 app2.use("/", express.static(path.resolve(__dirname, "../../dist/")));
-app2.get("/trial", (req, res) => {
-    res.send("it actually works tho...");
-});
 function getApp() {
     return app2;
 }
