@@ -17,6 +17,7 @@ const REQ = new requestHandler_1.default(CONNECTION);
 const app2 = express();
 app2.use(cors());
 app2.use(bodyParser.json());
+app2.use(bodyParser.urlencoded({ extended: true }));
 app2.get("/webhook", async (req, res) => {
     let result = await webhook_1.default.getBest();
     res.send(result);

@@ -23,6 +23,7 @@ const app2 = express();
 // app2.use(morgan('tiny'));
 app2.use(cors());
 app2.use(bodyParser.json());
+app2.use(bodyParser.urlencoded({ extended: true }));
 
 // establish all non-vue related routes
 app2.get("/webhook",async (req,res) => {
