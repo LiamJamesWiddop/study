@@ -19,7 +19,6 @@ const app2 = express();
 app2.use(cors());
 app2.use(bodyParser.json());
 app2.use(bodyParser.urlencoded({ extended: true }));
-app2.get("/webhook", webhook_1.default);
 app2.get("/trial", (req, res) => {
     res.send("it actually works tho...");
 });

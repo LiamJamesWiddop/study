@@ -27,8 +27,6 @@ app2.use(bodyParser.json());
 app2.use(bodyParser.urlencoded({ extended: true }));
 
 // establish all non-vue related routes
-app2.get("/webhook",webhook);
-
 app2.get("/trial", (req,res)=>{
   res.send("it actually works tho...");
 })
