@@ -11,7 +11,7 @@ dialogApp.intent('Quiz', async (conv) => {
         question: question[0]
     });
 });
-dialogApp.intent('Quiz_Question_Answer', conv => {
+dialogApp.intent('Quiz_Answer', conv => {
     console.log(conv);
     conv.close(`Ooh Ahh Glen McGra`);
 });
