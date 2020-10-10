@@ -7,8 +7,10 @@ const dialogApp = dialogflow();
 // Handle the Dialogflow intent named 'favorite color'.
 // The intent collects a parameter named 'color'.
 dialogApp.intent('Quiz', (conv) => {
-    console.log(conv);
-    conv.ask("I think you're onto something!")
+    console.log(conv.parameters[`quiz-topic`]);
+    conv.followup('AskQuestion', {
+        date: new Date().toISOString(),
+    })
     // Respond with the user's lucky number and end the conversation.
 });
 

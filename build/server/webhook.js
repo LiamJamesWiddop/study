@@ -3,8 +3,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const { dialogflow, Image, } = require('actions-on-google');
 const dialogApp = dialogflow();
 dialogApp.intent('Quiz', (conv) => {
-    console.log(conv);
-    conv.ask("I think you're onto something!");
+    console.log(conv.parameters[`quiz-topic`]);
+    conv.followup('AskQuestion', {
+        date: new Date().toISOString(),
+    });
 });
 dialogApp.intent('Goodbye', conv => {
     conv.close('See you later!');
