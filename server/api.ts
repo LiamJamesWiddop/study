@@ -75,7 +75,7 @@ export default new class API{
         // nextAttemptDelta is an extrapolation from confidence
         // when you answer a question, it is set based on your (correct/incorrect ratio) * number of attempts
         entries = entries.sort((a,b) => this.sortByAttempt(a,b));
-        
+
         // now retrieve the listings for the first two
         let questions:{
             question_id?:number,

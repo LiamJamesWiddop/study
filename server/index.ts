@@ -8,47 +8,43 @@ const morgan = require('morgan');
 const history = require('connect-history-api-fallback');
 
 import CONFIG from "../config";
-app.use(morgan('tiny'));
-app.use(cors());
-app.use(bodyParser.json());
+import webhook from "./webhook"
 
 // db controls
 import DBMANAGER from "./dbManager";
 const ENTITIES = path.resolve(__dirname,'./entities/*{.js,.ts}')
 const CONNECTION = DBMANAGER.connect("medprep",[ENTITIES]);
 
-import API from "./api"
-// begin static express site for production site
-if(CONFIG.PRODUCTION == true){
-  let vue = express.static("./dist/");
-  app.use(vue);
-  app.use(history({
-      disableDotRule: true,
-      verbose: true
-  }));
-  app.use(vue);
-
-  app.use("/webhook", (req,res)=>{
-    console.log(req);
-    API.getBest(null,undefined).then((questions)=>{
-      res.send(questions[0])
-    });
-  });
-}else{
-  // START SERVER
-}
-
 // REQUEST HANDLER
 import RequestHandler from "./requestHandler";
 const REQ = new RequestHandler(CONNECTION);
 
-if(CONFIG.PRODUCTION == true){
-  const server = app.listen(CONFIG.port, (err)=>{
-    console.log("App listening on port",CONFIG.port);
-  });
-  let wsServer = new ws.Server({ server: server });
-  websocketHandler(wsServer);
-}
+const app2 = express();
+// app2.use(morgan('tiny'));
+app2.use(cors());
+app2.use(bodyParser.json());
+
+// establish all non-vue related routes
+app2.get("/webhook",async (req,res) => {
+  let result = await webhook.getBest();
+  res.send(result);
+})
+
+// establish vue and associated router
+app2.use("/",express.static("./dist/"))
+app2.use(history({
+    disableDotRule: true,
+    verbose: true
+}));
+app2.use("/",express.static("./dist/"))
+
+
+
+const server = app2.listen(CONFIG.port, (err)=>{
+  console.log("App listening on port",CONFIG.port);
+});
+let wsServer = new ws.Server({ server: server });
+websocketHandler(wsServer);
 
 function getApp(){
   return app;

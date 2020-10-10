@@ -9,39 +9,30 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const history = require('connect-history-api-fallback');
 const config_1 = require("../config");
-app.use(morgan('tiny'));
-app.use(cors());
-app.use(bodyParser.json());
+const webhook_1 = require("./webhook");
 const dbManager_1 = require("./dbManager");
 const ENTITIES = path.resolve(__dirname, './entities/*{.js,.ts}');
 const CONNECTION = dbManager_1.default.connect("medprep", [ENTITIES]);
-const api_1 = require("./api");
-if (config_1.default.PRODUCTION == true) {
-    let vue = express.static("./dist/");
-    app.use(vue);
-    app.use(history({
-        disableDotRule: true,
-        verbose: true
-    }));
-    app.use(vue);
-    app.use("/webhook", (req, res) => {
-        console.log(req);
-        api_1.default.getBest(null, undefined).then((questions) => {
-            res.send(questions[0]);
-        });
-    });
-}
-else {
-}
 const requestHandler_1 = require("./requestHandler");
 const REQ = new requestHandler_1.default(CONNECTION);
-if (config_1.default.PRODUCTION == true) {
-    const server = app.listen(config_1.default.port, (err) => {
-        console.log("App listening on port", config_1.default.port);
-    });
-    let wsServer = new ws.Server({ server: server });
-    websocketHandler(wsServer);
-}
+const app2 = express();
+app2.use(cors());
+app2.use(bodyParser.json());
+app2.get("/webhook", async (req, res) => {
+    let result = await webhook_1.default.getBest();
+    res.send(result);
+});
+app2.use("/", express.static("./dist/"));
+app2.use(history({
+    disableDotRule: true,
+    verbose: true
+}));
+app2.use("/", express.static("./dist/"));
+const server = app2.listen(config_1.default.port, (err) => {
+    console.log("App listening on port", config_1.default.port);
+});
+let wsServer = new ws.Server({ server: server });
+websocketHandler(wsServer);
 function getApp() {
     return app;
 }
