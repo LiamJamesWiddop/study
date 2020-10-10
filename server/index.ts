@@ -31,12 +31,12 @@ app2.get("/webhook",async (req,res) => {
 })
 
 // establish vue and associated router
-app2.use("/",express.static("./dist/"))
+app2.use("/",express.static("../../dist/"))
 app2.use(history({
     disableDotRule: true,
     verbose: true
 }));
-app2.use("/",express.static("./dist/"))
+app2.use("/",express.static("../../dist/"))
 
 
 

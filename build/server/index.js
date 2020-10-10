@@ -22,12 +22,12 @@ app2.get("/webhook", async (req, res) => {
     let result = await webhook_1.default.getBest();
     res.send(result);
 });
-app2.use("/", express.static("./dist/"));
+app2.use("/", express.static("../../dist/"));
 app2.use(history({
     disableDotRule: true,
     verbose: true
 }));
-app2.use("/", express.static("./dist/"));
+app2.use("/", express.static("../../dist/"));
 const server = app2.listen(config_1.default.port, (err) => {
     console.log("App listening on port", config_1.default.port);
 });
