@@ -8,6 +8,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const history = require('connect-history-api-fallback');
+const dialogflow = require('dialogflow');
 const webhook_1 = require("./webhook");
 const dbManager_1 = require("./dbManager");
 const ENTITIES = path.resolve(__dirname, './entities/*{.js,.ts}');
@@ -18,10 +19,7 @@ const app2 = express();
 app2.use(cors());
 app2.use(bodyParser.json());
 app2.use(bodyParser.urlencoded({ extended: true }));
-app2.get("/webhook", async (req, res) => {
-    let result = await webhook_1.default.getBest();
-    res.send(result);
-});
+app2.get("/webhook", webhook_1.default);
 app2.get("/trial", (req, res) => {
     res.send("it actually works tho...");
 });
@@ -29,9 +27,7 @@ app2.post('/webhook', async (req, res) => {
     let result = await webhook_1.default.getBest();
     res.send(result);
 });
-app2.post('/webhooktwo', async (req, res) => {
-    res.send("Server reads you loud and clear!");
-});
+app2.post('/webhooktwo', webhook_1.default);
 app2.use("/", express.static(path.resolve(__dirname, "../../dist/")));
 app2.use(history({
     disableDotRule: true,

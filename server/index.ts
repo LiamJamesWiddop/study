@@ -6,6 +6,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const history = require('connect-history-api-fallback');
+const dialogflow = require('dialogflow')
 
 import CONFIG from "../config";
 import webhook from "./webhook"
@@ -26,10 +27,7 @@ app2.use(bodyParser.json());
 app2.use(bodyParser.urlencoded({ extended: true }));
 
 // establish all non-vue related routes
-app2.get("/webhook",async (req,res) => {
-  let result = await webhook.getBest();
-  res.send(result);
-})
+app2.get("/webhook",webhook);
 
 app2.get("/trial", (req,res)=>{
   res.send("it actually works tho...");
@@ -40,9 +38,7 @@ app2.post('/webhook',async (req,res)=>{
   res.send(result);
 })
 
-app2.post('/webhooktwo',async (req,res)=>{
-  res.send("Server reads you loud and clear!");
-})
+app2.post('/webhooktwo',webhook);
 
 // establish vue and associated router
 app2.use("/",express.static(path.resolve(__dirname,"../../dist/")))

@@ -1,13 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const api_1 = require("./api");
-exports.default = new class Webhook {
-    mounted() {
-        this.getBest();
-    }
-    async getBest() {
-        let ignore = 0;
-        return await api_1.default.getBest(null, ignore);
-    }
-};
+const dialogflow = require('dialogflow');
+const dialogApp = dialogflow({ debug: true });
+dialogApp.intent('Quiz', (conv, { topic }) => {
+    console.log(topic);
+    conv.close('Your lucky number is 7!');
+});
+exports.default = dialogApp;
 //# sourceMappingURL=webhook.js.map

@@ -1,12 +1,12 @@
-import API from "./api"
+const dialogflow = require('dialogflow');
+const dialogApp = dialogflow({debug: true});
 
-export default new class Webhook{
-    mounted(){
-        this.getBest();        
-    }
+// Handle the Dialogflow intent named 'favorite color'.
+// The intent collects a parameter named 'color'.
+dialogApp.intent('Quiz', (conv, {topic}) => {
+    console.log(topic);
+    // Respond with the user's lucky number and end the conversation.
+    conv.close('Your lucky number is 7!');
+});
 
-    async getBest(){
-        let ignore = 0;
-        return await API.getBest(null,ignore);
-    }
-}
+export default dialogApp;
