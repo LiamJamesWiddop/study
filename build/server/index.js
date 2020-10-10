@@ -29,6 +29,9 @@ app2.post('/webhook', async (req, res) => {
     let result = await webhook_1.default.getBest();
     res.send(result);
 });
+app2.post('/webhooktwo', async (req, res) => {
+    res.send("Server reads you loud and clear!");
+});
 app2.use("/", express.static(path.resolve(__dirname, "../../dist/")));
 app2.use(history({
     disableDotRule: true,

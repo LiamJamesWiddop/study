@@ -40,6 +40,10 @@ app2.post('/webhook',async (req,res)=>{
   res.send(result);
 })
 
+app2.post('/webhooktwo',async (req,res)=>{
+  res.send("Server reads you loud and clear!");
+})
+
 // establish vue and associated router
 app2.use("/",express.static(path.resolve(__dirname,"../../dist/")))
 app2.use(history({
