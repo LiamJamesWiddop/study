@@ -31,12 +31,16 @@ app2.get("/webhook",async (req,res) => {
 })
 
 // establish vue and associated router
-app2.use("/",express.static("../../dist/"))
+app2.use("/",express.static(path.resolve(__dirname,"../../dist/")))
 app2.use(history({
     disableDotRule: true,
     verbose: true
 }));
-app2.use("/",express.static("../../dist/"))
+app2.use("/",express.static(path.resolve(__dirname,"../../dist/")))
+
+app2.get("/trial", (req,res)=>{
+  res.send("it actually works tho...");
+})
 
 // const server = app2.listen(CONFIG.port, (err)=>{
 //   console.log("App listening on port",CONFIG.port);
