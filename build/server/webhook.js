@@ -2,9 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const { dialogflow, Image, } = require('actions-on-google');
 const dialogApp = dialogflow();
-dialogApp.intent('Quiz', (conv, { topic }) => {
-    console.log(topic);
-    conv.close('Your lucky number is 7!');
+dialogApp.intent('Quiz', (conv) => {
+    console.log(conv);
+    conv.ask("I think you're onto something!");
 });
 dialogApp.intent('Goodbye', conv => {
     conv.close('See you later!');
