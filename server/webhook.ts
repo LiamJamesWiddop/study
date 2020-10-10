@@ -12,7 +12,9 @@ dialogApp.intent('Quiz', async (conv) => {
     console.log(conv.parameters[`quiz-topic`]);
     let question = await API.getBest(null,0)
     console.log(question);
-    conv.followup('AskQuestion', question[0]);
+    conv.followup('AskQuestion', {
+        question:question[0]
+    });
     // Respond with the user's lucky number and end the conversation.
 });
 
