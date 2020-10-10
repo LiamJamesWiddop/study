@@ -11,10 +11,7 @@ const databaseStore_1 = require("../store/databaseStore");
 const requestHandler_1 = require("./requestHandler");
 const wsprotocol = location.protocol == 'http:' ? 'ws:' : 'wss:';
 const serverport = location.protocol == 'http:' ? 80 : 443;
-let ws;
-require("net").connect({ host: window.location.hostname, port: 80 }, function (socket) {
-    ws = socket;
-});
+const ws = new WebSocket(`${wsprotocol}//${window.location.hostname}:${serverport}`);
 const websocketHandler = new websocketHandler_1.default(ws);
 const wsPlugin = subscriber_1.default(websocketHandler);
 exports.store = vuex_1.createStore({

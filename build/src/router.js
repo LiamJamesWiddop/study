@@ -23,7 +23,8 @@ exports.routes = [
     {
         path: "/osce",
         name: "osce",
-        component: Osce_vue_1.default
+        component: Osce_vue_1.default,
+        hide: true,
     },
     {
         path: "/data",

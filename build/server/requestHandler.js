@@ -52,6 +52,7 @@ class RequestHandler {
                 if (store == "database") {
                     let tables = [];
                     let req;
+                    let flags = undefined;
                     let d = {};
                     for (let [key, value] of Object.entries(data)) {
                         if (key == 'tables') {
@@ -63,6 +64,11 @@ class RequestHandler {
                         if (key == 'data') {
                             d = value;
                         }
+                        if (key == 'flags') {
+                            flags = await this.ENTITIES[`flag`].target['find']({
+                                select: ['time', 'table', 'entry_id']
+                            });
+                        }
                     }
                     if (tables.length == 0 && data.length > 0) {
                         tables = data;
@@ -71,6 +77,15 @@ class RequestHandler {
                     for (let table of tables) {
                         try {
                             let entries = await this.ENTITIES[table].target[req || 'find'](d);
+                            if (flags) {
+                                for (let i = 0; i < entries.length; i++) {
+                                    let entry = entries[i];
+                                    let flagsFiltered = flags.filter(function (item) {
+                                        return (item.entry_id == entry.id && item.table == table);
+                                    });
+                                    entries[i] = { ...entry, flags: flagsFiltered };
+                                }
+                            }
                             res[table] = entries;
                         }
                         catch (err) {
@@ -82,7 +97,8 @@ class RequestHandler {
                     if (this.ENTITIES[store] && this.ENTITIES[store].target[action]) {
                         res = await this.ENTITIES[store].target[action](data);
                     }
-                    else {
+                    else if (api_1.default[action]) {
+                        console.log("CANNOT FIND ENTITY FOR", store, action);
                         res = await api_1.default[action](store, data);
                     }
                 }

@@ -1,4 +1,4 @@
 export default {
-    PRODUCTION:false,
+    PRODUCTION:true,
     port:80
 }

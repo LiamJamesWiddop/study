@@ -19,7 +19,7 @@ const CONNECTION = DBMANAGER.connect("medprep",[ENTITIES]);
 
 import API from "./api"
 // begin static express site for production site
-if(CONFIG.PRODUCTION == false){
+if(CONFIG.PRODUCTION == true){
   let vue = express.static("./dist/");
   app.use(vue);
   app.use(history({
@@ -42,7 +42,7 @@ if(CONFIG.PRODUCTION == false){
 import RequestHandler from "./requestHandler";
 const REQ = new RequestHandler(CONNECTION);
 
-if(CONFIG.PRODUCTION == false){
+if(CONFIG.PRODUCTION == true){
   const server = app.listen(CONFIG.port, (err)=>{
     console.log("App listening on port",CONFIG.port);
   });

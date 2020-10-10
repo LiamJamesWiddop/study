@@ -16,7 +16,7 @@ const dbManager_1 = require("./dbManager");
 const ENTITIES = path.resolve(__dirname, './entities/*{.js,.ts}');
 const CONNECTION = dbManager_1.default.connect("medprep", [ENTITIES]);
 const api_1 = require("./api");
-if (config_1.default.PRODUCTION == false) {
+if (config_1.default.PRODUCTION == true) {
     let vue = express.static("./dist/");
     app.use(vue);
     app.use(history({
@@ -35,7 +35,7 @@ else {
 }
 const requestHandler_1 = require("./requestHandler");
 const REQ = new requestHandler_1.default(CONNECTION);
-if (config_1.default.PRODUCTION == false) {
+if (config_1.default.PRODUCTION == true) {
     const server = app.listen(config_1.default.port, (err) => {
         console.log("App listening on port", config_1.default.port);
     });
