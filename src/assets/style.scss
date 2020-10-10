@@ -1,0 +1,105 @@
+$black:#000000;
+$prim:#3357f5;
+$green:#00b32d;
+$red:#e42323;
+$grey:#e0e0e0;
+$darkGrey:#757575;
+$radius:5px;
+$cubic:cubic-bezier(.01,1,.45,1);
+$lightShadow: 0px 0px 10px 0px rgba(0,0,0,0.15);
+
+$fontBiggest:30px;
+$fontGiant:24px;
+$fontLarge:20px;
+$fontMedium:16px;
+$fontSmall:12px;
+
+$fontLight:400;
+$fontMiddle:600;
+$fontHeavy:700;
+
+@import url("https://fonts.googleapis.com/css?family=Quicksand:400,600,700");
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+
+h1{
+    font-weight: 700;
+    margin: 0px;
+
+}
+h2{
+    font-size: $fontGiant;
+    font-weight: 700;
+    margin: 0px;
+}
+h3{
+    font-size: $fontLarge;
+    font-weight: 700;
+    margin:0px;
+    text-transform: capitalize;
+}
+h4{
+    font-size: $fontMedium;
+    font-weight: 700;
+    margin:0px;
+    text-transform: capitalize;
+}
+h5{
+    font-size: $fontSmall;
+    font-weight: 700;
+    margin:0px;
+    text-transform: capitalize;
+}
+
+input{
+    font-size: $fontMedium;
+    border: 0px;
+    outline: none;
+}
+
+section{
+    padding: 15px 0px;
+    position: relative;
+    section{
+        padding: 5px 10px 5px 33px;
+        cursor: pointer;
+        &:hover{
+            color: $prim;
+        }
+        border-bottom: 1px solid $grey;
+    }
+}
+
+textarea{
+    min-width: 250px;
+    font-family: inherit !important;
+    font-size: inherit;
+    font-weight: inherit;
+    resize: none;
+}
+
+html,body{
+    margin:0px;
+}
+#app{
+    font-size: $fontMedium;
+    font-weight: 600;
+    font-family: Quicksand, Helvetica, Arial, sans-serif;
+    text-align: left;
+    color: #000000;
+    line-height: 1.5em;
+}
+
+#page, #footer{
+    margin-top: 60px;
+    max-width: 1200px;
+    margin:auto;
+}
+
+.material-icons{
+    line-height: inherit !important;
+    width: 1em !important;
+    font-family: 'Material Icons',arial  !important;
+    &.small{
+        font-size: $fontLarge  !important;
+    }
+}
