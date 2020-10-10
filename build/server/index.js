@@ -8,6 +8,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const history = require('connect-history-api-fallback');
+const config_1 = require("../config");
 const webhook_1 = require("./webhook");
 const dbManager_1 = require("./dbManager");
 const ENTITIES = path.resolve(__dirname, './entities/*{.js,.ts}');
@@ -27,6 +28,11 @@ app2.use(history({
     verbose: true
 }));
 app2.use("/", express.static("../../dist/"));
+const server = app2.listen(config_1.default.port, (err) => {
+    console.log("App listening on port", config_1.default.port);
+});
+let wsServer = new ws.Server({ server: server });
+websocketHandler(wsServer);
 function getApp() {
     return app2;
 }
