@@ -38,16 +38,14 @@ app2.use(history({
 }));
 app2.use("/",express.static("../../dist/"))
 
-
-
-const server = app2.listen(CONFIG.port, (err)=>{
-  console.log("App listening on port",CONFIG.port);
-});
-let wsServer = new ws.Server({ server: server });
-websocketHandler(wsServer);
+// const server = app2.listen(CONFIG.port, (err)=>{
+//   console.log("App listening on port",CONFIG.port);
+// });
+// let wsServer = new ws.Server({ server: server });
+// websocketHandler(wsServer);
 
 function getApp(){
-  return app;
+  return app2;
 }
 
 function websocketHandler(wsServer) {
