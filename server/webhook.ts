@@ -17,6 +17,11 @@ dialogApp.intent('Quiz', async (conv) => {
     });
     // Respond with the user's lucky number and end the conversation.
 });
+dialogApp.intent('AskQuestion', async (conv) => {
+    console.log(conv);
+    conv.close(`Ooh Ahh Glen McGra`)
+    // Respond with the user's lucky number and end the conversation.
+});
 
 // Intent in Dialogflow called `Goodbye`
 dialogApp.intent('Goodbye', conv => {

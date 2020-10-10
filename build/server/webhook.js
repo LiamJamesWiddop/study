@@ -11,6 +11,10 @@ dialogApp.intent('Quiz', async (conv) => {
         question: question[0]
     });
 });
+dialogApp.intent('AskQuestion', async (conv) => {
+    console.log(conv);
+    conv.close(`Ooh Ahh Glen McGra`);
+});
 dialogApp.intent('Goodbye', conv => {
     conv.close('See you later!');
 });
