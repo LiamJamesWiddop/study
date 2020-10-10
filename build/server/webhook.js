@@ -1,12 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const api_1 = require("./api");
 const { dialogflow, Image, } = require('actions-on-google');
 const dialogApp = dialogflow();
-dialogApp.intent('Quiz', (conv) => {
+dialogApp.intent('Quiz', async (conv) => {
     console.log(conv.parameters[`quiz-topic`]);
-    conv.followup('AskQuestion', {
-        date: new Date().toISOString(),
-    });
+    let question = await api_1.default.getBest(null, 0);
+    conv.followup('ask-question', question);
 });
 dialogApp.intent('Goodbye', conv => {
     conv.close('See you later!');

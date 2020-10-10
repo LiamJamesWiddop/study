@@ -1,3 +1,5 @@
+import API from "./api"
+
 const {
     dialogflow,
     Image,
@@ -6,11 +8,10 @@ const dialogApp = dialogflow();
 
 // Handle the Dialogflow intent named 'favorite color'.
 // The intent collects a parameter named 'color'.
-dialogApp.intent('Quiz', (conv) => {
+dialogApp.intent('Quiz', async (conv) => {
     console.log(conv.parameters[`quiz-topic`]);
-    conv.followup('AskQuestion', {
-        date: new Date().toISOString(),
-    })
+    let question = await API.getBest(null,0)
+    conv.followup('ask-question', question);
     // Respond with the user's lucky number and end the conversation.
 });
 
