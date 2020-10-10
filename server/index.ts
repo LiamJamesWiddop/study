@@ -34,6 +34,11 @@ app2.get("/trial", (req,res)=>{
   res.send("it actually works tho...");
 })
 
+app2.post('/webhook',async (req,res)=>{
+  let result = await webhook.getBest();
+  res.send(result);
+})
+
 // establish vue and associated router
 app2.use("/",express.static(path.resolve(__dirname,"../../dist/")))
 app2.use(history({
