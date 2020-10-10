@@ -6,6 +6,7 @@ const dialogApp = dialogflow();
 dialogApp.intent('Quiz', async (conv) => {
     console.log(conv.parameters[`quiz-topic`]);
     let question = await api_1.default.getBest(null, 0);
+    console.log(question);
     conv.followup('ask-question', question);
 });
 dialogApp.intent('Goodbye', conv => {

@@ -11,6 +11,7 @@ const dialogApp = dialogflow();
 dialogApp.intent('Quiz', async (conv) => {
     console.log(conv.parameters[`quiz-topic`]);
     let question = await API.getBest(null,0)
+    console.log(question);
     conv.followup('ask-question', question);
     // Respond with the user's lucky number and end the conversation.
 });
