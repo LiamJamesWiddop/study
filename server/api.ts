@@ -141,7 +141,7 @@ export default new class API{
 
     async questionAttempt(store,data:{
         question_id,
-        correct,
+        correct:boolean,
         nextAttemptDelta?
     }){
 

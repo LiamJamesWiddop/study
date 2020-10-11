@@ -11,7 +11,7 @@ let newQuestion = async (conv) => {
         conv.ask("Okay, let's do another");
         let question = await api_1.default.getBest(null, 0);
         conv.data.question = question[0];
-        conv.ask(`${conv.data.question.body.question}:${conv.data.question.body.body}?`);
+        conv.ask(`${conv.data.question.body.question} ${conv.data.question.body.body}?`);
     }
     else {
         conv.close("Thanks for playing");
@@ -38,15 +38,17 @@ dialogApp.intent('Quiz_Answer', conv => {
     }
     conv.ask("Did you get it right?");
 });
-dialogApp.intent('Quiz_Answer_Followup', conv => {
+dialogApp.intent('Quiz_Answer_Followup', async (conv) => {
     conv.data.lastAnswer = 'correct';
     let correct = conv.parameters[`correct`];
     console.log(conv.parameters[`correct`], correct, correct == 'true');
     if (correct == 'true') {
         conv.ask("Well done!");
+        await api_1.default.questionAttempt(null, { question_id: conv.data.question.id, correct: true });
     }
     else {
         conv.ask("Oh well, maybe next time!");
+        await api_1.default.questionAttempt(null, { question_id: conv.data.question.id, correct: false });
     }
     conv.ask("Another question?");
 });
