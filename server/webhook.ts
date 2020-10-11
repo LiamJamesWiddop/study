@@ -14,11 +14,7 @@ dialogApp.intent('Quiz_Topic', async (conv) => {
     conv.followup('quiz-question-next', {});
 });
 
-dialogApp.intent('Quiz_Question_Next', newQuestion);
-dialogApp.intent('Quiz_Answer - correct',newQuestion);
-dialogApp.intent('Quiz_Answer - incorrect', newQuestion);
-
-async function newQuestion(conv){
+let newQuestion = async conv =>{
 
     // console.log("DATA",conv.data.lastAnswer);
     // if(conv.data.lastAnswer){
@@ -31,16 +27,21 @@ async function newQuestion(conv){
     //     conv.ask("Another question!");
     // }else{
     // }
-    conv.ask("Here's a question!");
-
     let question = await API.getBest(null,0)
     console.log(question);
     conv.data.question = question[0];
+    conv.ask("howdy partner")
     // invokes a quiz question
     conv.followup('quiz-question', {
         question:question[0]
     });
 }
+
+dialogApp.intent('Quiz_Question_Next', newQuestion);
+dialogApp.intent('Quiz_Answer - correct',newQuestion);
+dialogApp.intent('Quiz_Answer - incorrect', newQuestion);
+
+
 
 dialogApp.intent('Quiz_Answer', conv => {
     let htmlAnswer = parse(conv.data.question.body.answer);
@@ -76,9 +77,12 @@ dialogApp.intent('Quiz_Answer_Followup', conv => {
     if(!correct) {
         followup = 'quiz-answer-incorrect';
         conv.data.lastAnswer = 'incorrect';
+        conv.ask("Thats okay, maybe next time");
+    }else{
+        conv.ask("Well done!");
     }
 
-    console.log("Followup",followup);
+    conv.ask("Lets do another!");
     conv.followup(followup,{});
 })
 

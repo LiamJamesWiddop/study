@@ -9,18 +9,18 @@ dialogApp.intent('Quiz_Topic', async (conv) => {
     console.log("Topic received", conv.data.topic);
     conv.followup('quiz-question-next', {});
 });
-dialogApp.intent('Quiz_Question_Next', newQuestion);
-dialogApp.intent('Quiz_Answer - correct', newQuestion);
-dialogApp.intent('Quiz_Answer - incorrect', newQuestion);
-async function newQuestion(conv) {
-    conv.ask("Here's a question!");
+let newQuestion = async (conv) => {
     let question = await api_1.default.getBest(null, 0);
     console.log(question);
     conv.data.question = question[0];
+    conv.ask("howdy partner");
     conv.followup('quiz-question', {
         question: question[0]
     });
-}
+};
+dialogApp.intent('Quiz_Question_Next', newQuestion);
+dialogApp.intent('Quiz_Answer - correct', newQuestion);
+dialogApp.intent('Quiz_Answer - incorrect', newQuestion);
 dialogApp.intent('Quiz_Answer', conv => {
     let htmlAnswer = node_html_parser_1.parse(conv.data.question.body.answer);
     let images = htmlAnswer.querySelectorAll('img');
@@ -49,8 +49,12 @@ dialogApp.intent('Quiz_Answer_Followup', conv => {
     if (!correct) {
         followup = 'quiz-answer-incorrect';
         conv.data.lastAnswer = 'incorrect';
+        conv.ask("Thats okay, maybe next time");
     }
-    console.log("Followup", followup);
+    else {
+        conv.ask("Well done!");
+    }
+    conv.ask("Lets do another!");
     conv.followup(followup, {});
 });
 exports.default = dialogApp;
