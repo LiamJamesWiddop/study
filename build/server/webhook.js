@@ -27,6 +27,7 @@ dialogApp.intent('Quiz_Answer', conv => {
         htmlAnswer.removeChild(image);
     }
     conv.data.question.body.answer = text;
+    conv.ask("We were looking for this:");
     conv.ask(text);
     if (images) {
         conv.ask(new BasicCard({
@@ -44,12 +45,13 @@ dialogApp.intent('Quiz_Answer_Followup', async (conv) => {
     console.log(conv.parameters[`correct`], correct, correct == 'true');
     if (correct == 'true') {
         conv.ask("Well done!");
-        console.log({ question_id: conv.data.question.id, correct: true });
-        await api_1.default.questionAttempt(null, { question_id: conv.data.question.id, correct: true });
+        console.log(conv.data.question);
+        console.log({ question_id: conv.data.question.question_id, correct: true });
+        await api_1.default.questionAttempt(null, { question_id: conv.data.question.question_id, correct: true });
     }
     else {
         conv.ask("Oh well, maybe next time!");
-        await api_1.default.questionAttempt(null, { question_id: conv.data.question.id, correct: false });
+        await api_1.default.questionAttempt(null, { question_id: conv.data.question.question_id, correct: false });
     }
     conv.ask("Another question?");
 });
