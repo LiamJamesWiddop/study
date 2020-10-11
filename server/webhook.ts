@@ -15,14 +15,8 @@ dialogApp.intent('Quiz_Topic', async (conv) => {
 });
 
 dialogApp.intent('Quiz_Question_Next', newQuestion);
-dialogApp.intent('Quiz_Answer - correct', (conv)=>{
-    conv.ask("Well done!")
-    newQuestion(conv);
-});
-dialogApp.intent('Quiz_Answer - incorrect', (conv)=>{
-    conv.ask("Better luck next time.")
-    newQuestion(conv);
-});
+dialogApp.intent('Quiz_Answer - correct',newQuestion);
+dialogApp.intent('Quiz_Answer - incorrect', newQuestion);
 
 async function newQuestion(conv){
 
