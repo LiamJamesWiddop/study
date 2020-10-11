@@ -29,6 +29,8 @@ dialogApp.intent('Quiz_Another',conv=>{
     
     if(conv.parameters[`next`] == true){
         conv.followup('quiz-question-next', {});
+    }else{
+        conv.close("Thanks for playing")
     }
 });
 
