@@ -27,12 +27,14 @@ dialogApp.intent('Quiz_Answer', conv => {
     }
     conv.data.question.body.answer = text;
     conv.ask(text);
-    conv.ask(new BasicCard({
-        image: new Image({
-            url: images[0].getAttribute('src'),
-            alt: images[0].getAttribute('alt'),
-        }),
-    }));
+    if (images) {
+        conv.ask(new BasicCard({
+            image: new Image({
+                url: images[0].getAttribute('src'),
+                alt: images[0].getAttribute('alt'),
+            }),
+        }));
+    }
     conv.ask("Did you get it right?");
 });
 dialogApp.intent('Quiz_Answer_Followup', conv => {
