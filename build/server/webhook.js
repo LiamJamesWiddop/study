@@ -12,7 +12,10 @@ dialogApp.intent('Quiz', async (conv) => {
     });
 });
 dialogApp.intent('Quiz_Answer', conv => {
-    console.log(conv);
+    console.log(conv.arguments.Raw.list);
+    console.log(conv.body.queryResult.parameters);
+    console.log(conv.body.queryResult.fulfillmentMessages);
+    console.log(conv.body.queryResult.intent);
     conv.close(`Ooh Ahh Glen McGra`);
 });
 exports.default = dialogApp;
