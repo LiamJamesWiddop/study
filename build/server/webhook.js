@@ -41,7 +41,7 @@ dialogApp.intent('Quiz_Answer', conv => {
     conv.ask("Did you get it right?");
 });
 dialogApp.intent('Quiz_Answer_Followup', conv => {
-    conv.ask("Lets do another!");
+    conv.ask("HEYYYYY");
 });
 exports.default = dialogApp;
 //# sourceMappingURL=webhook.js.map
