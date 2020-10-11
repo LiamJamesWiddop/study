@@ -44,6 +44,7 @@ dialogApp.intent('Quiz_Answer_Followup', async (conv) => {
     console.log(conv.parameters[`correct`], correct, correct == 'true');
     if (correct == 'true') {
         conv.ask("Well done!");
+        console.log({ question_id: conv.data.question.id, correct: true });
         await api_1.default.questionAttempt(null, { question_id: conv.data.question.id, correct: true });
     }
     else {
