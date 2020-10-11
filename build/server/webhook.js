@@ -8,17 +8,16 @@ let newQuestion = async (conv) => {
     conv.data.lastAnswer = 'correct';
     let correct = conv.parameters[`correct`];
     console.log(conv.parameters[`correct`], correct, correct == 'true');
+    let prompt = '';
     if (correct == 'true') {
-        conv.ask("Well done!");
-        console.log(conv.data.question);
-        console.log({ question_id: conv.data.question.question_id, correct: true });
+        prompt = "Well done! ";
         await api_1.default.questionAttempt(null, { question_id: conv.data.question.question_id, correct: true });
     }
     else if (correct == 'false') {
-        conv.ask("Oh well, maybe next time!");
+        prompt = "Oh well, maybe next time! ";
         await api_1.default.questionAttempt(null, { question_id: conv.data.question.question_id, correct: false });
     }
-    conv.ask("Here comes a question!");
+    conv.ask(`${prompt}Here comes ${prompt ? 'another' : 'a'} question!`);
     let question = await api_1.default.getBest(null, 0);
     conv.data.question = question[0];
     let question_html = node_html_parser_1.parse(conv.data.question.body.question);
