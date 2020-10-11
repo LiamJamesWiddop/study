@@ -24,14 +24,9 @@ let newQuestion = async conv =>{
 }
 
 dialogApp.intent('Quiz_Question_Next', newQuestion);
-dialogApp.intent('Quiz_Answer - correct',conv=>{
+dialogApp.intent('Quiz_Another',conv=>{
     if(conv.parameters[`next`] == true){
-        newQuestion(conv)
-    }
-});
-dialogApp.intent('Quiz_Answer - incorrect', conv=>{
-    if(conv.parameters[`next`] == true){
-        newQuestion(conv)
+        conv.followup('quiz-question-next', {});
     }
 });
 
