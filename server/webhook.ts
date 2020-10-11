@@ -66,17 +66,8 @@ dialogApp.intent('Quiz_Answer', conv => {
 })
 
 dialogApp.intent('Quiz_Answer_Followup', conv => {
-    conv.data.lastAnswer = 'correct';
-    
-    console.log("Answer followup filled - asked if right or wrong");
-
-    let correct = conv.parameters[`correct`];
-    console.log("CORRECT",correct);
-
-    let followup = 'quiz-answer-correct';
-
     conv.ask("Lets do another!");
-    conv.followup(followup,{});
+    conv.followup('quiz-answer-incorrect',{});
 })
 
 export default dialogApp;
