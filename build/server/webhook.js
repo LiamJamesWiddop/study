@@ -13,21 +13,7 @@ dialogApp.intent('Quiz_Question_Next', newQuestion);
 dialogApp.intent('Quiz_Answer - correct', newQuestion);
 dialogApp.intent('Quiz_Answer - incorrect', newQuestion);
 async function newQuestion(conv) {
-    console.log("DATA", conv.data.lastAnswer);
-    if (conv.data.lastAnswer) {
-        if (conv.data.lastAnswer === 'correct') {
-            console.log("IS CORRECT");
-            conv.ask("Well done!");
-        }
-        else {
-            conv.ask("Maybe next time.");
-        }
-        conv.ask("Another question!");
-    }
-    else {
-        conv.ask("Here's a question!");
-    }
-    conv.ask("This works though");
+    conv.ask("Here's a question!");
     let question = await api_1.default.getBest(null, 0);
     console.log(question);
     conv.data.question = question[0];
