@@ -6,12 +6,10 @@ const { dialogflow, BasicCard, Image, } = require('actions-on-google');
 const dialogApp = dialogflow();
 dialogApp.intent('Quiz_Topic', async (conv) => {
     conv.data.topic = conv.parameters[`quiz-topic`];
-    console.log("Topic received", conv.data.topic);
     conv.followup('quiz-question-next', {});
 });
 let newQuestion = async (conv) => {
     let question = await api_1.default.getBest(null, 0);
-    console.log(question);
     conv.data.question = question[0];
     conv.followup('quiz-question', {
         question: question[0]
@@ -19,8 +17,8 @@ let newQuestion = async (conv) => {
 };
 dialogApp.intent('Quiz_Question_Next', newQuestion);
 dialogApp.intent('Quiz_Another', conv => {
-    console.log(conv.parameters[`next`]);
-    if (conv.parameters[`next`] == true) {
+    let next = conv.parameters[`next`][0];
+    if (next == 'true') {
         conv.followup('quiz-question-next', {});
     }
     else {
@@ -48,9 +46,9 @@ dialogApp.intent('Quiz_Answer', conv => {
 });
 dialogApp.intent('Quiz_Answer_Followup', conv => {
     conv.data.lastAnswer = 'correct';
-    let correct = conv.parameters[`correct`];
+    let correct = conv.parameters[`correct`][0];
     let followup = 'quiz-answer-correct';
-    if (!correct) {
+    if (correct == 'true') {
         followup = 'quiz-answer-incorrect';
         conv.data.lastAnswer = 'incorrect';
     }
