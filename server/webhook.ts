@@ -28,21 +28,13 @@ dialogApp.intent('Quiz_Question_Next', async (conv) => {
 
 dialogApp.intent('Quiz_Answer', conv => {
     let htmlAnswer = parse(conv.data.question.body.answer);
-
-    console.log("HTML",htmlAnswer);
     let images = htmlAnswer.querySelectorAll('img');
     let text = htmlAnswer.innerText;
     
     for(let image of images){
         htmlAnswer.removeChild(image);
     }
-    console.log("NEW HTML",htmlAnswer);
-
-    console.log("IMAGES",images);
-    console.log("TEXT",text);
-    
     conv.data.question.body.answer = text;
-    
     conv.ask(text); // this Simple Response is necessary
     conv.ask(new BasicCard({
         image: new Image({
@@ -51,10 +43,7 @@ dialogApp.intent('Quiz_Answer', conv => {
         }),
     }))
    
-    
-    // conv.followup('quiz-answer-display', {
-    //     answer:conv.data.question.body.answer
-    // });
+    conv.followup('quiz-answer-display', {});
 })
 
 dialogApp.intent('Quiz_Answer_Followup', conv => {
