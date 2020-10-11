@@ -14,9 +14,11 @@ dialogApp.intent('Quiz_Topic', async (conv) => {
     conv.followup('quiz-question-next', {});
 });
 
-dialogApp.intent('Quiz_Question_Next', newQuestion);
+dialogApp.intent('Quiz_Question_Next', (conv)=>{newQuestion(conv)});
 dialogApp.intent('Quiz_Answer - correct', (conv)=>{
     conv.ask("Well done!")
+    console.log(conv);
+    
     newQuestion(conv);
 });
 dialogApp.intent('Quiz_Answer - incorrect', (conv)=>{
@@ -30,6 +32,7 @@ async function newQuestion(conv){
     let question = await API.getBest(null,0)
     console.log(question);
     conv.data.question = question[0];
+    
     // invokes a quiz question
     conv.followup('quiz-question', {
         question:question[0]
@@ -45,7 +48,8 @@ dialogApp.intent('Quiz_Answer', conv => {
         htmlAnswer.removeChild(image);
     }
     conv.data.question.body.answer = text;
-    conv.ask(text); // this Simple Response is necessary
+    conv.ask("We were looking for:"); 
+    conv.ask(text);
 
     if(images){
         conv.ask(new BasicCard({
@@ -55,7 +59,8 @@ dialogApp.intent('Quiz_Answer', conv => {
             }),
         }))
     }
-    conv.ask("Did you get it right?"); // this Simple Response is necessary
+
+    conv.ask("Did you get it right?");
 })
 
 dialogApp.intent('Quiz_Answer_Followup', conv => {

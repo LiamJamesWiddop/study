@@ -9,9 +9,10 @@ dialogApp.intent('Quiz_Topic', async (conv) => {
     console.log("Topic received", conv.data.topic);
     conv.followup('quiz-question-next', {});
 });
-dialogApp.intent('Quiz_Question_Next', newQuestion);
+dialogApp.intent('Quiz_Question_Next', (conv) => { newQuestion(conv); });
 dialogApp.intent('Quiz_Answer - correct', (conv) => {
     conv.ask("Well done!");
+    console.log(conv);
     newQuestion(conv);
 });
 dialogApp.intent('Quiz_Answer - incorrect', (conv) => {
@@ -35,6 +36,7 @@ dialogApp.intent('Quiz_Answer', conv => {
         htmlAnswer.removeChild(image);
     }
     conv.data.question.body.answer = text;
+    conv.ask("We were looking for:");
     conv.ask(text);
     if (images) {
         conv.ask(new BasicCard({
