@@ -19,7 +19,19 @@ dialogApp.intent('Quiz_Answer - incorrect', (conv) => {
     newQuestion(conv);
 });
 async function newQuestion(conv) {
-    conv.ask("Fetching a question");
+    console.log("DATA", conv.data);
+    if (conv.data.lastAnswer) {
+        if (conv.data.lastAnswer == "correct") {
+            conv.ask("Well done!");
+        }
+        else {
+            conv.ask("Well done!");
+        }
+        conv.ask("Your next question is:");
+    }
+    else {
+        conv.ask("Getting you a question!");
+    }
     let question = await api_1.default.getBest(null, 0);
     console.log(question);
     conv.data.question = question[0];
@@ -47,12 +59,15 @@ dialogApp.intent('Quiz_Answer', conv => {
     conv.ask("Did you get it right?");
 });
 dialogApp.intent('Quiz_Answer_Followup', conv => {
+    conv.data.lastAnswer = 'correct';
     console.log("Answer followup filled - asked if right or wrong");
     let correct = conv.parameters[`correct`];
     console.log("CORRECT", correct);
     let followup = 'quiz-answer-correct';
-    if (!correct)
+    if (!correct) {
         followup = 'quiz-answer-incorrect';
+        conv.data.lastAnswer = 'incorrect';
+    }
     console.log("Followup", followup);
     conv.followup(followup, {});
 });
