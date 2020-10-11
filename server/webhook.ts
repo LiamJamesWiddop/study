@@ -27,7 +27,7 @@ dialogApp.intent('Quiz_Question_Next', async (conv) => {
 dialogApp.intent('Quiz_Answer', conv => {
     console.log("Answer provided - providing actual answer");
 
-    conv.followup('quiz-answer-followup', {
+    conv.followup('quiz-answer-display', {
         answer:conv.data.question.body.answer
     });
 })
@@ -35,7 +35,7 @@ dialogApp.intent('Quiz_Answer', conv => {
 dialogApp.intent('Quiz_Answer_Followup', conv => {
     console.log("Answer followup filled - asked if right or wrong");
 
-    let correct = conv.parameters[`quiz-topic`];
+    let correct = conv.parameters[`correct`];
     console.log("CORRECT",correct);
     
     let followup = 'quiz-answer-correct';
