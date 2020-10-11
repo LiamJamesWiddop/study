@@ -22,7 +22,8 @@ async function newQuestion(conv){
 
     console.log("DATA",conv.data.lastAnswer);
     if(conv.data.lastAnswer){
-        if(conv.data.lastAnswer == 'correct'){
+        if(conv.data.lastAnswer === 'correct'){
+            console.log("IS CORRECT");
             conv.ask("Well done!");
         }else{
             conv.ask("Maybe next time.");
