@@ -21,16 +21,20 @@ dialogApp.intent('Quiz_Question_Next', async (conv) => {
 dialogApp.intent('Quiz_Answer', conv => {
     let htmlAnswer = node_html_parser_1.parse(conv.data.question.body.answer);
     console.log("HTML", htmlAnswer);
-    let images = htmlAnswer.querySelector('img');
-    htmlAnswer.removeChild(images);
-    console.log(htmlAnswer.toString());
-    conv.data.question.body.answer = htmlAnswer.toString();
-    console.log();
-    conv.ask(conv.data.question.body.answer);
+    let images = htmlAnswer.querySelectorAll('img');
+    let text = htmlAnswer.innerText;
+    for (let image of images) {
+        htmlAnswer.removeChild(image);
+    }
+    console.log("NEW HTML", htmlAnswer);
+    console.log("IMAGES", images);
+    console.log("TEXT", text);
+    conv.data.question.body.answer = text;
+    conv.ask(text);
     conv.ask(new BasicCard({
         image: new Image({
-            url: images.getAttribute('src'),
-            alt: images.getAttribute('alt'),
+            url: images[0].getAttribute('src'),
+            alt: images[0].getAttribute('alt'),
         }),
     }));
 });

@@ -30,16 +30,24 @@ dialogApp.intent('Quiz_Answer', conv => {
     let htmlAnswer = parse(conv.data.question.body.answer);
 
     console.log("HTML",htmlAnswer);
-    let images = htmlAnswer.querySelector('img');
-    htmlAnswer.removeChild(images);
-    console.log(htmlAnswer.toString());
-    conv.data.question.body.answer = htmlAnswer.toString();
+    let images = htmlAnswer.querySelectorAll('img');
+    let text = htmlAnswer.innerText;
     
-    conv.ask(conv.data.question.body.answer); // this Simple Response is necessary
+    for(let image of images){
+        htmlAnswer.removeChild(image);
+    }
+    console.log("NEW HTML",htmlAnswer);
+
+    console.log("IMAGES",images);
+    console.log("TEXT",text);
+    
+    conv.data.question.body.answer = text;
+    
+    conv.ask(text); // this Simple Response is necessary
     conv.ask(new BasicCard({
         image: new Image({
-            url: images.getAttribute('src'), //url of your image.
-            alt: images.getAttribute('alt'),
+            url: images[0].getAttribute('src'), //url of your image.
+            alt: images[0].getAttribute('alt'),
         }),
     }))
    
