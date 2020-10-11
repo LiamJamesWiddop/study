@@ -15,23 +15,9 @@ dialogApp.intent('Quiz_Topic', async (conv) => {
 });
 
 let newQuestion = async conv =>{
-
-    // console.log("DATA",conv.data.lastAnswer);
-    // if(conv.data.lastAnswer){
-    //     if(conv.data.lastAnswer === 'correct'){
-    //         console.log("IS CORRECT");
-    //         conv.ask("Well done!");
-    //     }else{
-    //         conv.ask("Maybe next time.");
-    //     }
-    //     conv.ask("Another question!");
-    // }else{
-    // }
     let question = await API.getBest(null,0)
     console.log(question);
     conv.data.question = question[0];
-    conv.ask("howdy partner")
-    // invokes a quiz question
     conv.followup('quiz-question', {
         question:question[0]
     });
@@ -66,7 +52,14 @@ dialogApp.intent('Quiz_Answer', conv => {
 })
 
 dialogApp.intent('Quiz_Answer_Followup', conv => {
-    conv.ask("HEYYYYY")
+    conv.data.lastAnswer = 'correct';
+    let correct = conv.parameters[`correct`];
+    let followup = 'quiz-answer-correct';
+    if(!correct) {
+        followup = 'quiz-answer-incorrect';
+        conv.data.lastAnswer = 'incorrect';
+    }
+    conv.followup(followup,{});
 })
 
 export default dialogApp;

@@ -13,7 +13,6 @@ let newQuestion = async (conv) => {
     let question = await api_1.default.getBest(null, 0);
     console.log(question);
     conv.data.question = question[0];
-    conv.ask("howdy partner");
     conv.followup('quiz-question', {
         question: question[0]
     });
@@ -41,7 +40,14 @@ dialogApp.intent('Quiz_Answer', conv => {
     conv.ask("Did you get it right?");
 });
 dialogApp.intent('Quiz_Answer_Followup', conv => {
-    conv.ask("HEYYYYY");
+    conv.data.lastAnswer = 'correct';
+    let correct = conv.parameters[`correct`];
+    let followup = 'quiz-answer-correct';
+    if (!correct) {
+        followup = 'quiz-answer-incorrect';
+        conv.data.lastAnswer = 'incorrect';
+    }
+    conv.followup(followup, {});
 });
 exports.default = dialogApp;
 //# sourceMappingURL=webhook.js.map
