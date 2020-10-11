@@ -16,6 +16,26 @@ let newQuestion = async conv =>{
         conv.ask("Okay, let's do another");
         let question = await API.getBest(null,0)
         conv.data.question = question[0];
+
+        // parse html out of question
+        let question_html = parse(conv.data.question.body.question);
+        let question_images = question_html.querySelectorAll('img');
+        for(let image of question_images){
+            question_html.removeChild(image);
+        }
+        let question_text = question_html.innerText;
+        conv.data.question.body.question = question_text;
+
+        // parse html out of question
+        let body_html = parse(conv.data.question.body.question);
+        let body_images = body_html.querySelectorAll('img');
+        for(let image of body_images){
+            question_html.removeChild(image);
+        }
+        let body_text = body_html.innerText;
+        conv.data.question.body.body = body_text;
+
+        // display question
         conv.ask(`${conv.data.question.body.question} ${conv.data.question.body.body}?`)
     }else{
         conv.close("Thanks for playing");
@@ -37,7 +57,7 @@ dialogApp.intent('Quiz_Answer', conv => {
     conv.ask("We were looking for this:"); // this Simple Response is necessary
     conv.ask(text); // this Simple Response is necessary
 
-    if(images){
+    if(images.length > 0){
         conv.ask(new BasicCard({
             image: new Image({
                 url: images[0].getAttribute('src'), //url of your image.

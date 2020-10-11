@@ -11,6 +11,20 @@ let newQuestion = async (conv) => {
         conv.ask("Okay, let's do another");
         let question = await api_1.default.getBest(null, 0);
         conv.data.question = question[0];
+        let question_html = node_html_parser_1.parse(conv.data.question.body.question);
+        let question_images = question_html.querySelectorAll('img');
+        for (let image of question_images) {
+            question_html.removeChild(image);
+        }
+        let question_text = question_html.innerText;
+        conv.data.question.body.question = question_text;
+        let body_html = node_html_parser_1.parse(conv.data.question.body.question);
+        let body_images = body_html.querySelectorAll('img');
+        for (let image of body_images) {
+            question_html.removeChild(image);
+        }
+        let body_text = body_html.innerText;
+        conv.data.question.body.body = body_text;
         conv.ask(`${conv.data.question.body.question} ${conv.data.question.body.body}?`);
     }
     else {
@@ -29,7 +43,7 @@ dialogApp.intent('Quiz_Answer', conv => {
     conv.data.question.body.answer = text;
     conv.ask("We were looking for this:");
     conv.ask(text);
-    if (images) {
+    if (images.length > 0) {
         conv.ask(new BasicCard({
             image: new Image({
                 url: images[0].getAttribute('src'),
