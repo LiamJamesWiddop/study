@@ -1,7 +1,9 @@
 import API from "./api"
+import { parse } from 'node-html-parser';
 
 const {
     dialogflow,
+    BasicCard,
     Image,
 } = require('actions-on-google')
 const dialogApp = dialogflow();
@@ -25,11 +27,24 @@ dialogApp.intent('Quiz_Question_Next', async (conv) => {
 });
 
 dialogApp.intent('Quiz_Answer', conv => {
-    console.log("Answer provided - providing actual answer");
+    let htmlAnswer = parse(conv.data.question.body.answer);
 
-    conv.followup('quiz-answer-display', {
-        answer:conv.data.question.body.answer
-    });
+    console.log("HTML",htmlAnswer);
+    let images = htmlAnswer.querySelector('img');
+    console.log("Images:",images);
+
+    conv.ask(conv.data.question.body.answer); // this Simple Response is necessary
+    conv.ask(new BasicCard({
+        image: new Image({
+            url: images.getAttribute('src'), //url of your image.
+            alt: images.getAttribute('alt'),
+        }),
+    }))
+   
+    
+    // conv.followup('quiz-answer-display', {
+    //     answer:conv.data.question.body.answer
+    // });
 })
 
 dialogApp.intent('Quiz_Answer_Followup', conv => {
@@ -41,6 +56,7 @@ dialogApp.intent('Quiz_Answer_Followup', conv => {
     let followup = 'quiz-answer-correct';
     if(!correct) followup = 'quiz-answer-incorrect'
 
+    console.log("Followup",followup);
     conv.followup(followup,{});
 })
 

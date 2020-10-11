@@ -1,7 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const api_1 = require("./api");
-const { dialogflow, Image, } = require('actions-on-google');
+const node_html_parser_1 = require("node-html-parser");
+const { dialogflow, BasicCard, Image, } = require('actions-on-google');
 const dialogApp = dialogflow();
 dialogApp.intent('Quiz_Topic', async (conv) => {
     conv.data.topic = conv.parameters[`quiz-topic`];
@@ -18,10 +19,17 @@ dialogApp.intent('Quiz_Question_Next', async (conv) => {
     });
 });
 dialogApp.intent('Quiz_Answer', conv => {
-    console.log("Answer provided - providing actual answer");
-    conv.followup('quiz-answer-display', {
-        answer: conv.data.question.body.answer
-    });
+    let htmlAnswer = node_html_parser_1.parse(conv.data.question.body.answer);
+    console.log("HTML", htmlAnswer);
+    let images = htmlAnswer.querySelector('img');
+    console.log("Images:", images);
+    conv.ask(conv.data.question.body.answer);
+    conv.ask(new BasicCard({
+        image: new Image({
+            url: images.getAttribute('src'),
+            alt: images.getAttribute('alt'),
+        }),
+    }));
 });
 dialogApp.intent('Quiz_Answer_Followup', conv => {
     console.log("Answer followup filled - asked if right or wrong");
@@ -30,6 +38,7 @@ dialogApp.intent('Quiz_Answer_Followup', conv => {
     let followup = 'quiz-answer-correct';
     if (!correct)
         followup = 'quiz-answer-incorrect';
+    console.log("Followup", followup);
     conv.followup(followup, {});
 });
 exports.default = dialogApp;
