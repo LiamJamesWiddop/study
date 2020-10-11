@@ -33,6 +33,8 @@ async function newQuestion(conv){
         conv.ask("Here's a question!");
     }
     
+    conv.ask("This works though");
+
     let question = await API.getBest(null,0)
     console.log(question);
     conv.data.question = question[0];
