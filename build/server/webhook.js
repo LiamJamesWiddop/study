@@ -22,7 +22,7 @@ dialogApp.intent('Quiz_Answer', conv => {
     let htmlAnswer = node_html_parser_1.parse(conv.data.question.body.answer);
     console.log("HTML", htmlAnswer);
     let images = htmlAnswer.querySelector('img');
-    console.log("Images:", images);
+    htmlAnswer.removeChild(images);
     conv.ask(conv.data.question.body.answer);
     conv.ask(new BasicCard({
         image: new Image({

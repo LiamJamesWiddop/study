@@ -31,7 +31,7 @@ dialogApp.intent('Quiz_Answer', conv => {
 
     console.log("HTML",htmlAnswer);
     let images = htmlAnswer.querySelector('img');
-    console.log("Images:",images);
+    htmlAnswer.removeChild(images);
 
     conv.ask(conv.data.question.body.answer); // this Simple Response is necessary
     conv.ask(new BasicCard({
