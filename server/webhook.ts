@@ -10,7 +10,7 @@ dialogApp.intent('Quiz', async (conv) => {
     console.log(conv.parameters[`quiz-topic`]);
     let question = await API.getBest(null,0)
     console.log(question);
-
+    conv.data.question = question[0];
     // invokes a quiz question
     conv.followup('quiz-question', {
         question:question[0]
@@ -18,11 +18,10 @@ dialogApp.intent('Quiz', async (conv) => {
 });
 
 dialogApp.intent('Quiz_Answer', conv => {
-    console.log(JSON.stringify(conv.arguments));
+    console.log(JSON.stringify(conv.data));
     console.log("+++++++");
     console.log("+++++++");
     console.log("+++++++");
-    console.log(JSON.stringify(conv.body.queryResult));
     conv.close(`Ooh Ahh Glen McGra`)
 })
 
