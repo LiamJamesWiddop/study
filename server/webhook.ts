@@ -13,7 +13,7 @@ let newQuestion = async conv =>{
     let next = conv.parameters[`next`];
     console.log(conv.parameters[`next`],next,next=='true');
     if(!next || next=='true'){
-        conv.ask("Okay, let's do another");
+        conv.ask("Okay, let's do it!");
         let question = await API.getBest(null,0)
         conv.data.question = question[0];
 
@@ -54,9 +54,7 @@ dialogApp.intent('Quiz_Answer', conv => {
         htmlAnswer.removeChild(image);
     }
     conv.data.question.body.answer = text;
-    conv.ask("We were looking for this:"); // this Simple Response is necessary
-    conv.ask(text); // this Simple Response is necessary
-
+    conv.ask(`We were looking for: ${text}`); // this Simple Response is necessary
     if(images.length > 0){
         conv.ask(new BasicCard({
             image: new Image({
