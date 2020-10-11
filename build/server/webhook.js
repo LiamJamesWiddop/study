@@ -18,7 +18,7 @@ let newQuestion = async (conv) => {
         }
         let question_text = question_html.innerText;
         conv.data.question.body.question = question_text;
-        let body_html = node_html_parser_1.parse(conv.data.question.body.question);
+        let body_html = node_html_parser_1.parse(conv.data.question.body.body);
         let body_images = body_html.querySelectorAll('img');
         for (let image of body_images) {
             question_html.removeChild(image);
