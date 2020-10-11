@@ -33,7 +33,7 @@ dialogApp.intent('Quiz_Answer', conv => {
             alt: images[0].getAttribute('alt'),
         }),
     }));
-    conv.followup('quiz-answer-display', {});
+    conv.ask("Did you get it right?");
 });
 dialogApp.intent('Quiz_Answer_Followup', conv => {
     console.log("Answer followup filled - asked if right or wrong");

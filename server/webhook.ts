@@ -42,8 +42,8 @@ dialogApp.intent('Quiz_Answer', conv => {
             alt: images[0].getAttribute('alt'),
         }),
     }))
-   
-    conv.followup('quiz-answer-display', {});
+
+    conv.ask("Did you get it right?"); // this Simple Response is necessary
 })
 
 dialogApp.intent('Quiz_Answer_Followup', conv => {
