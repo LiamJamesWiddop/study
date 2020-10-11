@@ -39,6 +39,7 @@ dialogApp.intent('Quiz_Answer', conv => {
     conv.data.question.body.answer = text;
     conv.ask("We were looking for:");
     conv.ask(text);
+    conv.ask("This is a test");
     if (images) {
         conv.ask(new BasicCard({
             image: new Image({
@@ -47,6 +48,7 @@ dialogApp.intent('Quiz_Answer', conv => {
             }),
         }));
     }
+    conv.ask("Anad fter");
     conv.ask("Did you get it right?");
 });
 dialogApp.intent('Quiz_Answer_Followup', conv => {
