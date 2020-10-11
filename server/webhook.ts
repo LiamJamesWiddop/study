@@ -23,12 +23,13 @@ let newQuestion = async conv =>{
 
 dialogApp.intent('Quiz_Question_Next', newQuestion);
 dialogApp.intent('Quiz_Another',conv=>{
-    let next = conv.parameters[`next`][0];
+    let next = conv.parameters[`next`];
     console.log(conv.parameters[`next`],next,next=='true');
     if(next!=='true'){
         conv.close("Thanks for playing");
+    }else{
+        conv.ask("Okay, let's do another");
     }
-    conv.followup('quiz-question-next', {});
 });
 
 

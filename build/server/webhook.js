@@ -17,12 +17,14 @@ let newQuestion = async (conv) => {
 };
 dialogApp.intent('Quiz_Question_Next', newQuestion);
 dialogApp.intent('Quiz_Another', conv => {
-    let next = conv.parameters[`next`][0];
+    let next = conv.parameters[`next`];
     console.log(conv.parameters[`next`], next, next == 'true');
     if (next !== 'true') {
         conv.close("Thanks for playing");
     }
-    conv.followup('quiz-question-next', {});
+    else {
+        conv.ask("Okay, let's do another");
+    }
 });
 dialogApp.intent('Quiz_Answer', conv => {
     let htmlAnswer = node_html_parser_1.parse(conv.data.question.body.answer);
