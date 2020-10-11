@@ -18,10 +18,11 @@ dialogApp.intent('Quiz', async (conv) => {
 });
 
 dialogApp.intent('Quiz_Answer', conv => {
-    console.log(conv.arguments.Raw.list);
-    console.log(conv.body.queryResult.parameters);
-    console.log(conv.body.queryResult.fulfillmentMessages);
-    console.log(conv.body.queryResult.intent);
+    console.log(JSON.stringify(conv.arguments));
+    console.log("+++++++");
+    console.log("+++++++");
+    console.log("+++++++");
+    console.log(JSON.stringify(conv.body.queryResult));
     conv.close(`Ooh Ahh Glen McGra`)
 })
 
