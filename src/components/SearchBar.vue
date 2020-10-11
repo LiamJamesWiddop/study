@@ -31,6 +31,7 @@ export default class SearchBar extends Vue {
         top:0;
         position: sticky;
         align-items: center;
+        background: #fff;
         .inputWrapper{
           display: grid;
           grid-template-columns: 40px auto;

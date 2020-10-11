@@ -187,4 +187,14 @@ export default class InformationPopup extends Vue {
     }
   }
 }
+
+@media only screen and (max-width: 400px) {
+  .InformationPopup{
+    width: auto !important;
+    bottom:0 !important;
+    right:0 !important;
+    left:0 !important;
+    top: auto !important;
+  }
+}
 </style>

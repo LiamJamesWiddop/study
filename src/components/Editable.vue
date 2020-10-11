@@ -282,6 +282,9 @@ export default class Editable extends Vue {
   border: 1px solid $prim;
     box-shadow: inset 0px 0px 0px 1px $prim;
   }
+  img{
+    max-width: 100%;
+  }
 }
 
 </style>

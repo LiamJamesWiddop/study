@@ -33,32 +33,38 @@ export default class NavBar extends Vue {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
+  .NavBar{
+      height: 56px;
+      line-height: 56px;
+      display: grid;
+      grid-template-columns: 1fr auto auto auto auto;
+      padding: 0px 50px;
+      border-bottom: 1px solid $grey;
+      .name{
+        margin: 0px;
+        font-size: $fontGiant;
+        font-weight: $fontMiddle;
+      }
+      ._field{
+          width: auto;
+          padding: 0px 20px;
+          cursor: pointer;
+          text-transform: capitalize;
+          font-weight: $fontHeavy;
+          box-sizing: border-box;
+          &:hover{
+              opacity: 1;
+          }
+          &.current{
+            box-shadow: inset 0px -2px 0px 0px $prim;
+            color: $prim;
+          }
+      }
+  }
+
+  @media only screen and (max-width: 700px) {
     .NavBar{
-        height: 56px;
-        line-height: 56px;
-        display: grid;
-        grid-template-columns: 1fr auto auto auto auto;
-        padding: 0px 50px;
-        border-bottom: 1px solid $grey;
-        .name{
-          margin: 0px;
-          font-size: $fontGiant;
-          font-weight: $fontMiddle;
-        }
-        ._field{
-            width: auto;
-            padding: 0px 20px;
-            cursor: pointer;
-            text-transform: capitalize;
-            font-weight: $fontHeavy;
-            box-sizing: border-box;
-            &:hover{
-                opacity: 1;
-            }
-            &.current{
-              box-shadow: inset 0px -2px 0px 0px $prim;
-              color: $prim;
-            }
-        }
+      padding: 0px 25px;
     }
+  }
 </style>

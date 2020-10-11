@@ -287,4 +287,20 @@ export default class Quiz extends Vue {
 .question{
   padding-top: 40px;
 }
+
+@media only screen and (max-width: 400px) {
+  .buttons{
+    padding: 18px 0px;
+    border-top: 1px solid $grey;
+    background: #fff;
+    position: fixed;
+    bottom: 0px;
+    left: 25px;
+    right:25px;
+    z-index: 9;
+  }
+  .question{
+    padding-bottom: 81px;
+  }
+}
 </style>

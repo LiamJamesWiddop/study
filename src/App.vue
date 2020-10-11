@@ -24,4 +24,14 @@ export default class App extends Vue {
   padding: 0px 50px;
   margin: auto;
 }
+
+#footer{
+  padding-bottom: 40px;
+}
+
+@media only screen and (max-width: 700px) {
+  #page{
+    padding: 0px 25px;
+  }
+}
 </style>
