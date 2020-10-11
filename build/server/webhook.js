@@ -18,8 +18,16 @@ let newQuestion = async (conv) => {
     });
 };
 dialogApp.intent('Quiz_Question_Next', newQuestion);
-dialogApp.intent('Quiz_Answer - correct', newQuestion);
-dialogApp.intent('Quiz_Answer - incorrect', newQuestion);
+dialogApp.intent('Quiz_Answer - correct', conv => {
+    if (conv.parameters[`next`] == true) {
+        newQuestion(conv);
+    }
+});
+dialogApp.intent('Quiz_Answer - incorrect', conv => {
+    if (conv.parameters[`next`] == true) {
+        newQuestion(conv);
+    }
+});
 dialogApp.intent('Quiz_Answer', conv => {
     let htmlAnswer = node_html_parser_1.parse(conv.data.question.body.answer);
     let images = htmlAnswer.querySelectorAll('img');
