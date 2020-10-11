@@ -8,19 +8,14 @@ const {
 } = require('actions-on-google')
 const dialogApp = dialogflow();
 
-dialogApp.intent('Quiz_Topic', async (conv) => {
-    conv.data.topic = conv.parameters[`quiz-topic`];
-    conv.followup('quiz-question-next', {});
-});
 
 let newQuestion = async conv =>{
     let question = await API.getBest(null,0)
     conv.data.question = question[0];
-    conv.followup('quiz-question', {
-        question:question[0]
-    });
+    conv.ask(`${conv.data.question.question}:${conv.data.question.body}?`)
 }
 
+dialogApp.intent('Quiz_Topic', newQuestion);
 dialogApp.intent('Quiz_Question_Next', newQuestion);
 dialogApp.intent('Quiz_Another',conv=>{
     let next = conv.parameters[`next`];
@@ -30,6 +25,7 @@ dialogApp.intent('Quiz_Another',conv=>{
     }else{
         conv.ask("Okay, let's do another");
     }
+    newQuestion(conv);
 });
 
 
@@ -60,12 +56,12 @@ dialogApp.intent('Quiz_Answer_Followup', conv => {
     conv.data.lastAnswer = 'correct';
     let correct = conv.parameters[`correct`];
     console.log(conv.parameters[`correct`],correct,correct=='true');
-    let followup = 'quiz-answer-correct';
     if(correct == 'true') {
-        followup = 'quiz-answer-incorrect';
-        conv.data.lastAnswer = 'incorrect';
+        conv.ask("Well done!");
+    }else{
+        conv.ask("Oh well, maybe next time!");
     }
-    conv.followup(followup,{});
+    conv.ask("Another question?");
 })
 
 export default dialogApp;
