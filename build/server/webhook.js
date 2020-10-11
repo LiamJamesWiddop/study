@@ -42,7 +42,6 @@ dialogApp.intent('Quiz_Answer', conv => {
 });
 dialogApp.intent('Quiz_Answer_Followup', conv => {
     conv.ask("Lets do another!");
-    conv.followup('quiz-answer-incorrect', {});
 });
 exports.default = dialogApp;
 //# sourceMappingURL=webhook.js.map
