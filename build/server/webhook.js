@@ -19,6 +19,7 @@ let newQuestion = async (conv) => {
 };
 dialogApp.intent('Quiz_Question_Next', newQuestion);
 dialogApp.intent('Quiz_Another', conv => {
+    console.log(conv.parameters[`next`]);
     if (conv.parameters[`next`] == true) {
         conv.followup('quiz-question-next', {});
     }
