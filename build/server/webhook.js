@@ -46,14 +46,6 @@ dialogApp.intent('Quiz_Answer_Followup', conv => {
     let correct = conv.parameters[`correct`];
     console.log("CORRECT", correct);
     let followup = 'quiz-answer-correct';
-    if (!correct) {
-        followup = 'quiz-answer-incorrect';
-        conv.data.lastAnswer = 'incorrect';
-        conv.ask("Thats okay, maybe next time");
-    }
-    else {
-        conv.ask("Well done!");
-    }
     conv.ask("Lets do another!");
     conv.followup(followup, {});
 });
