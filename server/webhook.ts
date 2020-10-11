@@ -10,25 +10,20 @@ const dialogApp = dialogflow();
 
 
 let newQuestion = async conv =>{
-    let question = await API.getBest(null,0)
-    conv.data.question = question[0];
-    conv.ask(`${conv.data.question.question}:${conv.data.question.body}?`)
+    let next = conv.parameters[`next`];
+    console.log(conv.parameters[`next`],next,next=='true');
+    if(!next || next=='true'){
+        conv.ask("Okay, let's do another");
+        let question = await API.getBest(null,0)
+        conv.data.question = question[0];
+        conv.ask(`${conv.data.question.body.question}:${conv.data.question.body.body}?`)
+    }else{
+        conv.close("Thanks for playing");
+    }
 }
 
 dialogApp.intent('Quiz_Topic', newQuestion);
-dialogApp.intent('Quiz_Question_Next', newQuestion);
-dialogApp.intent('Quiz_Another',conv=>{
-    let next = conv.parameters[`next`];
-    console.log(conv.parameters[`next`],next,next=='true');
-    if(next!=='true'){
-        conv.close("Thanks for playing");
-    }else{
-        conv.ask("Okay, let's do another");
-    }
-    newQuestion(conv);
-});
-
-
+dialogApp.intent('Quiz_Another',newQuestion);
 
 dialogApp.intent('Quiz_Answer', conv => {
     let htmlAnswer = parse(conv.data.question.body.answer);
