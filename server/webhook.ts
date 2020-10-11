@@ -15,24 +15,21 @@ dialogApp.intent('Quiz_Topic', async (conv) => {
 });
 
 dialogApp.intent('Quiz_Question_Next', newQuestion);
-dialogApp.intent('Quiz_Answer - correct', newQuestion);
-dialogApp.intent('Quiz_Answer - incorrect', newQuestion);
+dialogApp.intent('Quiz_Answer - correct', (conv)=>{
+    conv.ask("Well done!")
+    newQuestion(conv);
+});
+dialogApp.intent('Quiz_Answer - incorrect', (conv)=>{
+    conv.ask("Better luck next time.")
+    newQuestion(conv);
+});
 
 async function newQuestion(conv){
-
-    if(conv.data.lastAnswer){
-        if(conv.data.lastAnswer){
-            conv.ask("Great job!");
-        }else{
-            conv.ask("Maybe next time.");
-        }
-    }
     conv.ask("Fetching a question");
     
     let question = await API.getBest(null,0)
     console.log(question);
     conv.data.question = question[0];
-    
     // invokes a quiz question
     conv.followup('quiz-question', {
         question:question[0]
@@ -48,10 +45,7 @@ dialogApp.intent('Quiz_Answer', conv => {
         htmlAnswer.removeChild(image);
     }
     conv.data.question.body.answer = text;
-    conv.ask("We were looking for:"); 
-    conv.ask(text);
-
-    conv.ask("This is a test");
+    conv.ask(text); // this Simple Response is necessary
 
     if(images){
         conv.ask(new BasicCard({
@@ -61,9 +55,7 @@ dialogApp.intent('Quiz_Answer', conv => {
             }),
         }))
     }
-
-    conv.ask("Anad fter");
-    conv.ask("Did you get it right?");
+    conv.ask("Did you get it right?"); // this Simple Response is necessary
 })
 
 dialogApp.intent('Quiz_Answer_Followup', conv => {
@@ -75,7 +67,6 @@ dialogApp.intent('Quiz_Answer_Followup', conv => {
     let followup = 'quiz-answer-correct';
     if(!correct) followup = 'quiz-answer-incorrect'
 
-    conv.data.lastAnswer = correct;
     console.log("Followup",followup);
     conv.followup(followup,{});
 })
