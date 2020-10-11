@@ -10,6 +10,20 @@ const dialogApp = dialogflow();
 
 
 let newQuestion = async conv =>{
+
+    conv.data.lastAnswer = 'correct';
+    let correct = conv.parameters[`correct`];
+    console.log(conv.parameters[`correct`],correct,correct=='true');
+    if(correct == 'true') {
+        conv.ask("Well done!");
+        console.log(conv.data.question);
+        console.log({question_id:conv.data.question.question_id,correct:true});
+        await API.questionAttempt(null,{question_id:conv.data.question.question_id,correct:true})
+    }else if(correct == 'false'){
+        conv.ask("Oh well, maybe next time!");
+        await API.questionAttempt(null,{question_id:conv.data.question.question_id,correct:false})
+    }
+
     conv.ask("Here comes a question!");
     let question = await API.getBest(null,0)
     conv.data.question = question[0];
@@ -38,6 +52,7 @@ let newQuestion = async conv =>{
 
 dialogApp.intent('Quiz_Topic', newQuestion);
 dialogApp.intent('Quiz_Another',newQuestion);
+dialogApp.intent('Quiz_Answer_Followup', newQuestion)
 
 dialogApp.intent('Quiz_Answer', conv => {
     let htmlAnswer = parse(conv.data.question.body.answer);
@@ -60,20 +75,5 @@ dialogApp.intent('Quiz_Answer', conv => {
     conv.ask("Did you get it right?"); // this Simple Response is necessary
 })
 
-dialogApp.intent('Quiz_Answer_Followup', async conv => {
-    conv.data.lastAnswer = 'correct';
-    let correct = conv.parameters[`correct`];
-    console.log(conv.parameters[`correct`],correct,correct=='true');
-    if(correct == 'true') {
-        conv.ask("Well done!");
-        console.log(conv.data.question);
-        console.log({question_id:conv.data.question.question_id,correct:true});
-        await API.questionAttempt(null,{question_id:conv.data.question.question_id,correct:true})
-    }else{
-        conv.ask("Oh well, maybe next time!");
-        await API.questionAttempt(null,{question_id:conv.data.question.question_id,correct:false})
-    }
-    newQuestion(conv);
-})
 
 export default dialogApp;
