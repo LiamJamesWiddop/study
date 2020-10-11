@@ -25,12 +25,10 @@ dialogApp.intent('Quiz_Question_Next', newQuestion);
 dialogApp.intent('Quiz_Another',conv=>{
     let next = conv.parameters[`next`][0];
     console.log(conv.parameters[`next`],next,next=='true');
-    
-    if(next == 'true'){
-        conv.followup('quiz-question-next', {});
-    }else{
-        conv.close("Thanks for playing")
+    if(next!=='true'){
+        conv.close("Thanks for playing");
     }
+    conv.followup('quiz-question-next', {});
 });
 
 
@@ -59,7 +57,7 @@ dialogApp.intent('Quiz_Answer', conv => {
 
 dialogApp.intent('Quiz_Answer_Followup', conv => {
     conv.data.lastAnswer = 'correct';
-    let correct = conv.parameters[`correct`][0];
+    let correct = conv.parameters[`correct`];
     console.log(conv.parameters[`correct`],correct,correct=='true');
     let followup = 'quiz-answer-correct';
     if(correct == 'true') {
