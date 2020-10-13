@@ -81,6 +81,7 @@ input{
     font-family: inherit;
     font-weight: inherit;
     padding: 0px;
+    min-width: 0px;
 }
 
 section{
@@ -115,12 +116,6 @@ html,body{
     line-height: 1.5em;
     overflow: hidden;
     min-height: 100vh
-}
-
-#page, #footer{
-    margin-top: 60px;
-    max-width: 1200px;
-    margin:auto;
 }
 
 .material-icons{

@@ -19,11 +19,11 @@
         </Flag>
       </VueButton>
     </div> 
-    <section v-for="folder in tempDeck.root_folders" :key="folder.id">
-      <Folder :folder="folder"></Folder>
+    <section v-for="(folder,index) in tempDeck.root_folders" :key="folder.id">
+      <Folder :folder="folder" @remove="tempDeck.root_folders.splice(index,1)"></Folder>
     </section>
-    <section v-for="item in tempDeck.root_items" :key="item.id">
-      <Item :item="item"></Item>
+    <section v-for="(item,index) in tempDeck.root_items" :key="item.id">
+      <Item :item="item" @remove="tempDeck.root_items.splice(index,1)"></Item>
     </section>
   </div>
 </template>

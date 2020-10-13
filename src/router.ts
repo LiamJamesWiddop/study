@@ -34,14 +34,21 @@ export const routes = [
         path:"/decks",
         name:"Decks",
         component:Decks,
+        children:[
+            {
+                path:"/editor/:id",
+                name:"editor",
+                component:Editor,
+            }
+        ]
     },
     // EDITOR FORMS
-    {
-        path:"/editor/:form/:id",
-        name:"editor",
-        component:Editor,
-        hide:true,
-    },
+    // {
+    //     path:"/editor/:form/:id",
+    //     name:"editor",
+    //     component:Editor,
+    //     hide:true,
+    // },
     
 ]
 const Router = createRouter({

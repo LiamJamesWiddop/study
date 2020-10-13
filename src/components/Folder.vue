@@ -14,7 +14,7 @@
     <div class="material-icons-outlined icon" v-else>folder</div>
     <input ref="input" :readonly="readonly" v-model="folderData.name" placeholder="[No Name]" @blur="save" @keydown.enter="save">
     <div class="functions">
-      <VueButton icon="more_vert" :circle="true" :condition="newAwait" @click.stop="flag">
+      <VueButton icon="more_vert" :circle="true" @click.stop="flag">
         <Flag :noPadding="true" v-if="popupOpened" @close="flag" @click.stop>
           <VueButton text="New folder" :row="true" :condition="flagAwait" @click.stop="flagSubmit('folder')"/>
           <VueButton text="New item" :row="true" :condition="flagAwait" @click.stop="flagSubmit('item')"/>
@@ -25,23 +25,23 @@
     </div>
   </div>
   <div class="children" v-if="folderData && opened">
-    <div class="e" v-if="folderData.subFolders.length == 0 && folderData.items.length == 0">
+    <div class="e" v-if="(!folderData.subFolders || folderData.subFolders.length == 0) && (!folderData.items || folderData.items.length == 0)">
       <div class="material-icons-outlined icon">error_outline</div>
       <div>Empty folder</div>
     </div>
     <template v-else>
-      <section v-for="subFolder in folderData.subFolders" :key="subFolder.id">
-        <Folder :folder="subFolder"></Folder>
+      <section v-for="(subFolder,index) in folderData.subFolders" :key="subFolder.id">
+        <Folder :folder="subFolder" @remove="folderData.subFolders.splice(index,1)"></Folder>
       </section>
-      <section v-for="item in folderData.items" :key="item.id">
-        <Item :item="item"></Item>
+      <section v-for="(item,index) in folderData.items" :key="item.id">
+        <Item :item="item" @remove="folderData.items.splice(index,1)"></Item>
       </section>
     </template>
   </div>
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
+import { Options, Vue, } from 'vue-class-component';
 import { Component, Prop, Watch, Emit} from 'vue-property-decorator'
 import VueButton from '@/components/VueButton.vue';
 import Flag from '@/components/Flag.vue';
@@ -68,7 +68,7 @@ interface FolderStructure{
     Item,
     Ripple
   },
-  emits:[]
+  emits:['remove']
 })
 export default class Folder extends Vue {
 
@@ -101,9 +101,9 @@ export default class Folder extends Vue {
     if(context == "delete"){
       if(confirm("Are you sure you want to delete this folder and ALL its contents? WARNING: This action cannot be undone.")){
         this.saving = 1;
-        this.$request.POST('folder/remove',{id:this.folderData.id},(folder)=>{
-          console.log(folder);
+        this.$request.POST('folder/remove',this.folderData,(folder)=>{
           this.saving = 2;
+          this.remove();
           delete this.folderData;
         }).catch(err=>{
           this.saving = 3;
@@ -134,6 +134,11 @@ export default class Folder extends Vue {
         reject(err)
       })
     })
+  }
+
+  @Emit("remove")
+  remove(){
+    return this.folderData;
   }
 
   open(){
@@ -189,6 +194,7 @@ export default class Folder extends Vue {
     padding: 2px 5px 2px 15px;
     height: 30px;
     display: grid;
+    max-width: 100%;
     grid-template-columns: auto 1fr auto;
     column-gap: 10px;
     border-radius: $radius;

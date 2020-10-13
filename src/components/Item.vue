@@ -1,5 +1,5 @@
 <template>
-  <div :class="{item:true,readonly:readonly,focused:popupOpened}" @click="open(`editor`,item.table,item.id)">
+  <div :class="{item:true,readonly:readonly,focused:popupOpened}" @click="open(`editor`,item.id)">
     <Ripple v-if="readonly"/>
     <div :class="{
       savingMarker:true, 
@@ -12,12 +12,13 @@
     <div class="material-icons-outlined icon">login</div>
     <input ref="input" :readonly="readonly" v-model="item.name" placeholder="[Untitled]" @blur="save" @keydown.enter="save">
     <div class="functions">
-      <VueButton icon="more_vert" :circle="true" :condition="newAwait" @click.stop="flag">
+      <VueButton icon="more_vert" :circle="true" @click.stop="flag">
         <Flag :noPadding="true" v-if="popupOpened" @close="flag" @click.stop>
           <div class="header">
           </div>
           <div class="row">
             <VueButton text="Rename" :row="true" @click.stop="flagSubmit('edit')"/>
+            <VueButton text="Delete" :row="true" @click.stop="flagSubmit('delete')"/>
           </div>
         </Flag>
       </VueButton>
@@ -51,7 +52,7 @@ interface ItemStructure{
     Flag,
     Ripple
   },
-  emits:[]
+  emits:['remove']
 })
 export default class Item extends Vue {
 
@@ -66,13 +67,31 @@ export default class Item extends Vue {
     this.popupOpened = !this.popupOpened;
   }
 
-  flagSubmit(context:"item"|"folder"|"edit"){
+  flagSubmit(context:"item"|"folder"|"edit"|"delete"){
     this.popupOpened = false;
     if(context == "edit"){
       this.readonly = false;
       (this.$refs.input as HTMLInputElement).focus()
       return;
     }
+    if(context == "delete"){
+      if(confirm("Are you sure you want to delete this folder and ALL its contents? WARNING: This action cannot be undone.")){
+        this.saving = 1;
+        this.$request.POST('item/remove',this.item,(folder)=>{
+          this.saving = 2;
+          this.remove();
+          delete this.item;
+        }).catch(err=>{
+          this.saving = 3;
+        })
+      }
+      return;
+    }
+  }
+
+  @Emit("remove")
+  remove(){
+    return this.item;
   }
 
   async save(){
@@ -99,9 +118,9 @@ export default class Item extends Vue {
     },1000)
   }
 
-  open(name,form,id){
+  open(name,id){
     if(this.saving > 0 || !this.readonly) return;
-    this.$router.push({name,params:{form,id}});
+    this.$router.push({name,params:{id}});
   }
   
 }
@@ -113,8 +132,9 @@ export default class Item extends Vue {
   .item{
     padding: 2px 5px 2px 15px;
     display: grid;
-    grid-template-columns: auto 1fr auto;
+    grid-template-columns: auto 1fr 30px;
     column-gap: 10px;
+    max-width: 100%;
     border-radius: $radius;
     cursor: pointer;
     position: relative;

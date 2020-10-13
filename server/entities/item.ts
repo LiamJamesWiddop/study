@@ -17,15 +17,18 @@ export default class Item extends BaseEntity {
     deck: Deck;
 
     @ManyToOne(Type=>Table,Table=>Table, {
-        cascade:true,
+        onDelete:"CASCADE",
     })
     table: Table;
     
     @OneToMany(Type=>Table_entry,Table_entry=>Table_entry.item, {
         cascade:true,
     })
+    @JoinColumn()
     entries: Table_entry[];
 
-    @ManyToOne(type => Folder, Folder => Folder.items)
+    @ManyToOne(type => Folder, Folder => Folder.items, {
+        onDelete:"CASCADE",
+    })
     folder: Folder; 
 }

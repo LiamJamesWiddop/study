@@ -1,59 +1,56 @@
 <template>
-  <NavBar></NavBar>
-  <div id="page">
-    <SearchBar>
-      <div class="inputWrapper">
-        <div class="material-icons">outlined_flag</div>
-        <input placeholder="Search" type="text" v-model="searchValue">
+  <SearchBar>
+    <div class="inputWrapper">
+      <div class="material-icons">outlined_flag</div>
+      <input placeholder="Search" type="text">
+    </div>
+    <div class="field">
+      <div>
+        <VueButton text="Flag" icon="outlined_flag" :condition="deleteAwait" @click.stop="flag">
+          <Flag v-if="flagOpened" @close="flag" @click.stop>
+            <Input label="Text" :multi="true" @input="flagText =  $event.target.value"/>
+            <VueButton text="Submit" :condition="flagAwait" @click.stop="flagSubmit"/>
+          </Flag>
+        </VueButton>
       </div>
-      <div class="field">
-        <div>
-          <VueButton text="Flag" icon="outlined_flag" :condition="deleteAwait" @click.stop="flag">
-            <Flag v-if="flagOpened" @close="flag" @click.stop>
-              <Input label="Text" :multi="true" @input="flagText =  $event.target.value"/>
-              <VueButton text="Submit" :condition="flagAwait" @click.stop="flagSubmit"/>
-            </Flag>
-          </VueButton>
-        </div>
+    </div>
+  </SearchBar>
+  <template v-if="dataObject"> 
+    <h5 class="table" v-if="form">EDIT {{ form.toUpperCase() }}</h5>
+    <template v-for="(value,field) in dataObject" :key="field">
+      <Editable 
+      v-if="typeof value == 'string' && dbState.length > 0" 
+      :autoFill="dbState" 
+      :fieldName="field" 
+      :value="value" 
+      @update="update($event,field)"
+      @autoFillChosen="autoFillChosen"
+      @setPopupData="setPopupData"
+      @setPopupCoords="setPopupCoords"></Editable>
+      <div class="relations" v-else-if="typeof value == 'object'"> 
+        <h5>{{ field.toUpperCase() }}</h5>
+        <div v-for="(a,index) in value" :key="index" @click="this.open(`editor`,field,a.id)"> {{a.name}} </div>
       </div>
-    </SearchBar>
-    <template v-if="dataObject"> 
-      <h5 class="table" v-if="form">EDIT {{ form.toUpperCase() }}</h5>
-      <template v-for="(value,field) in dataObject" :key="field">
-        <Editable 
-        v-if="typeof value == 'string' && dbState.length > 0" 
-        :autoFill="dbState" 
-        :fieldName="field" 
-        :value="value" 
-        @update="update($event,field)"
-        @autoFillChosen="autoFillChosen"
-        @setPopupData="setPopupData"
-        @setPopupCoords="setPopupCoords"></Editable>
-        <div class="relations" v-else-if="typeof value == 'object'"> 
-          <h5>{{ field.toUpperCase() }}</h5>
-          <div v-for="(a,index) in value" :key="index" @click="this.open(`editor`,field,a.id)"> {{a.name}} </div>
-        </div>
-      </template>
+    </template>
 
-      <div id="footer">
-        <div></div>
-        <VueButton text="Delete" @click="del" :condition="deleteAwait"/>
-        <VueButton text="Save" @click="save" :condition="saveAwait"/>
-      </div>
+    <div id="footer">
+      <div></div>
+      <VueButton text="Delete" @click="del" :condition="deleteAwait"/>
+      <VueButton text="Save" @click="save" :condition="saveAwait"/>
+    </div>
 
-      <InformationPopup v-if="popupData" :coords="popupCoords" :popupData="popupData" @setPopupData="setPopupData"/>
-    </template>
-    <template v-else-if="loading">
-        <div class="relations"> 
-          Loading data...
-        </div>
-    </template>
-    <template v-else>
-        <div class="relations"> 
-          No data for this registry
-        </div>
-    </template>
-  </div>
+    <InformationPopup v-if="popupData" :coords="popupCoords" :popupData="popupData" @setPopupData="setPopupData"/>
+  </template>
+  <template v-else-if="loading">
+      <div class="relations"> 
+        Loading data...
+      </div>
+  </template>
+  <template v-else>
+      <div class="relations"> 
+        No data for this registry
+      </div>
+  </template>
 </template>
 
 <script lang="ts">

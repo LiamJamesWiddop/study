@@ -11,8 +11,8 @@ export default class Folder extends BaseEntity {
     @Column({ default: "" })
     name: string;
 
-    @ManyToOne(type => Deck, Deck => Deck.root_folders,{
-        onDelete: 'CASCADE'
+    @ManyToOne(type => Deck, Deck => Deck.root_folders, {
+        onDelete: 'CASCADE',
     })
     deck: Deck;
 
@@ -22,15 +22,15 @@ export default class Folder extends BaseEntity {
     @JoinColumn()
     subFolders: Folder[];
 
-    @ManyToOne(type => Folder, Folder => Folder.id,{
-        onDelete: 'CASCADE'
+    @ManyToOne(type => Folder, Folder => Folder.id, {
+        onDelete: 'CASCADE',
     })
-    @JoinColumn()
     parent_id: number;
 
     @OneToMany(type => Item, Item => Item.folder, {
         cascade: true,
     })
+    @JoinColumn()
     items: Item[];
 
     static async contents(id){

@@ -1,6 +1,6 @@
 <template>
   <NavBar></NavBar>
-  <div id="page">
+  <div id="page" :class="{content:$route.params.id}">
     <SearchBar>
       <div class="inputWrapper">
         <div class="material-icons">search</div>
@@ -16,6 +16,9 @@
     <template v-else>
       No decks
     </template>
+  </div>
+  <div id="editor">
+    <router-view></router-view>
   </div>
 </template>
 
@@ -116,6 +119,19 @@ export default class Data extends Vue {
     grid-template-columns: 1fr auto;
     column-gap: 20px;
     background: #ffffff;
+  }
+
+  .content{
+    position: absolute;
+    left:0;
+    right:auto;
+    width: 300px;
+  }
+
+  #editor{
+    position: absolute;
+    left: 400px;
+    right: 50px;
   }
 
 </style>

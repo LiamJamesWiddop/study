@@ -11,12 +11,14 @@ export default class Table_Entry extends BaseEntity {
     @Column({ default: "" })
     value: string;
 
-    @ManyToOne(Type=>Item,Item=>Item.entries)
+    @ManyToOne(Type=>Item,Item=>Item.entries, {
+        onDelete:"CASCADE",
+    })
     item: Item;
 
     @ManyToOne(type=>Table_column, Table_column => Table_column.entries, {
-        cascade:true,
-        eager:true
+        eager:true,
+        onDelete:'CASCADE'
     })
     column: Table_column;
 }
