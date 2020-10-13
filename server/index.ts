@@ -46,11 +46,15 @@ app2.use(history({
 }));
 app2.use("/",express.static(path.resolve(__dirname,"../../dist/")))
 
-// const server = app2.listen(CONFIG.port, (err)=>{
-//   console.log("App listening on port",CONFIG.port);
-// });
-// let wsServer = new ws.Server({ server: server });
-// websocketHandler(wsServer);
+
+// COMMENT OUT ON PRODUCTION
+const server = app2.listen(CONFIG.port, (err)=>{
+  console.log("App listening on port",CONFIG.port);
+});
+let wsServer = new ws.Server({ server: server });
+websocketHandler(wsServer);
+
+
 
 function getApp(){
   return app2;

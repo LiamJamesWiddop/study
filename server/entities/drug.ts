@@ -22,7 +22,6 @@ export default class Drug extends BaseEntity {
     @ManyToMany(type => Symptom, Symptom => Symptom.drug, {
         cascade:true,
     })
-    @JoinTable()
     symptom: Symptom[];
 
     @ManyToMany(type => disease, disease => disease.drug, {

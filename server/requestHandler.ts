@@ -22,6 +22,7 @@ export default class RequestHandler{
             let EntityMetadatas:EntityMetadata[] = this.CONNECTION.entityMetadatas;
             for(let EntityMetadata of EntityMetadatas){
                 let name = (EntityMetadata.name).toLowerCase();
+                console.log("ENTITY", name);
                 this.ENTITIES[name] = {
                     target:EntityMetadata.target,
                     relations:this.getRelations(EntityMetadata),
@@ -34,9 +35,18 @@ export default class RequestHandler{
     }
 
     getRelations(EntityMetadata:EntityMetadata){
-        let relations:(string|Function)[] = [];
+        let relations:{
+            name:string,
+            type:String|Function,
+            target:String|Function,
+        }[] = [];
         for(let relation of EntityMetadata.relations){
-            relations.push(relation.propertyName);
+            relations.push({
+                name:relation.propertyName,
+                type:relation.type,
+                target:relation.target
+            });
+            console.log("->",relation.propertyName,relation.type,"is observing",relation.target);
         }
         return relations;
     }
@@ -53,28 +63,29 @@ export default class RequestHandler{
                 return entity;
             }else{
                 let res;
-                if(store == "database"){
-                    let tables = [];
-                    let req;
-                    let flags = undefined;
-                    let d = {};
-                    for(let [key,value] of Object.entries(data)){
-                        if(key == 'tables'){
-                            let tableArr = value as Array<any>;
-                            for(let table of tableArr){
-                                tables.push(table);
-                            }
-                        }
-                        if(key == 'data'){
-                            d = value;
-                        }
-                        if(key == 'flags'){
-                            flags = await this.ENTITIES[`flag`].target['find']({
-                                select:['time','table','entry_id']
-                            });
+                let tables = [];
+                let req;
+                let flags = undefined;
+                let d = undefined;
+
+                for(let [key,value] of Object.entries(data)){
+                    if(key == 'tables'){
+                        let tableArr = value as Array<any>;
+                        for(let table of tableArr){
+                            tables.push(table);
                         }
                     }
+                    if(key == 'data'){
+                        d = value;
+                    }
+                    if(key == 'flags'){
+                        flags = await this.ENTITIES[`flag`].target['find']({
+                            select:['time','table','entry_id']
+                        });
+                    }
+                }
 
+                if(store == "database"){
                     if(tables.length == 0 && data.length > 0){
                         tables = data;
                     }
@@ -97,12 +108,37 @@ export default class RequestHandler{
                         }
                     }
                 }else{
+                    if(this.ENTITIES[store].relations && data.relations){
+                        for(let i=0; i<this.ENTITIES[store].relations.length; i++){
+                            let relationName = this.ENTITIES[store].relations[i].name
+                            let relationData = data.relations[relationName];
+                            if(relationData){
+                                console.log(this.ENTITIES[store].relations[i].name, "CALLED");
+                                let relationFunction = this.ENTITIES[store].relations[i].type;
+                                let relationInstance = await relationFunction.create();
+                                for(let [key,value] of Object.entries(relationData)){
+                                    relationInstance[key] = value;
+                                }
+                                let newRelation  = await relationInstance.save();
+                                console.log("NEW",relationName,":",newRelation);
+                                
+                                if(d[relationName]){
+                                    d[relationName].push(newRelation)
+                                }else{
+                                    d[relationName] = [newRelation]
+                                }
+                                break;
+                            }
+                        }
+                    }
                     if(this.ENTITIES[store] && this.ENTITIES[store].target[action]){
-                        res = await this.ENTITIES[store].target[action](data);
+                        console.log("SENDING",(d||data));
+                        res = await this.ENTITIES[store].target[action](d || data);
                     }else if(API[action]){
                         console.log("CANNOT FIND ENTITY FOR",store,action);
                         res = await API[action](store,data)
                     }
+                    console.log(res);
                 }
                 return res
             }

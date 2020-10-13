@@ -2,6 +2,7 @@ $black:#000000;
 $prim:#3357f5;
 $green:#00b32d;
 $red:#e42323;
+$lightGrey:#efefef;
 $grey:#e0e0e0;
 $darkGrey:#757575;
 $radius:5px;
@@ -19,7 +20,30 @@ $fontMiddle:600;
 $fontHeavy:700;
 
 @import url("https://fonts.googleapis.com/css?family=Quicksand:400,600,700");
-@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined");
+
+@keyframes loaderEnter {
+    0%{
+        transform: translate3d(-10px, 0px, 0px);
+        opacity: 0;
+    }
+    100%{
+        transform: translate3d(0px, 0px, 0px);
+        opacity: 1;
+    }
+}
+
+@keyframes pulse {
+    0%{
+        transform: scale3d(0.7,0.7,0.7);
+    }
+    50%{
+        transform: scale3d(1,1,1);
+    }
+    100%{
+        transform: scale3d(0.7,0.7,0.7);
+    }
+}
 
 h1{
     font-weight: 700;
@@ -54,18 +78,20 @@ input{
     font-size: $fontMedium;
     border: 0px;
     outline: none;
+    font-family: inherit;
+    font-weight: inherit;
+    padding: 0px;
 }
 
 section{
-    padding: 15px 0px;
+    padding-top: 15px;
     position: relative;
     section{
-        padding: 5px 10px 5px 33px;
+        padding: 0px;
         cursor: pointer;
-        &:hover{
-            color: $prim;
-        }
-        border-bottom: 1px solid $grey;
+    }
+    section{
+        color: #000;
     }
 }
 
@@ -88,6 +114,7 @@ html,body{
     color: #000000;
     line-height: 1.5em;
     overflow: hidden;
+    min-height: 100vh
 }
 
 #page, #footer{
@@ -97,8 +124,8 @@ html,body{
 }
 
 .material-icons{
-    line-height: inherit !important;
-    width: 1em !important;
+    line-height: inherit;
+    width: 1em;
     font-family: 'Material Icons',arial  !important;
     &.small{
         font-size: $fontLarge  !important;

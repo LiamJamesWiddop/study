@@ -7,6 +7,7 @@
     spinLoad:true,
     coloured:coloured,
     success:success,
+    circle:circle,
     fail:fail,
       }">
       <template v-if="isLoading || success || fail">
@@ -38,6 +39,7 @@ export default class SpinLoader extends Vue {
   success:boolean = false;
 
   @Prop({}) coloured:boolean;
+  @Prop({}) circle:boolean;
   @Prop({}) condition:Promise<any> | boolean;
 
   reset(){
@@ -118,6 +120,13 @@ export default class SpinLoader extends Vue {
       }
     }
 
+    &.circle{
+      border-radius: 50%;
+      .border{
+        border-radius:50%;
+      }
+    }
+
     .block{
       position: absolute;
       left:0;
@@ -134,8 +143,8 @@ export default class SpinLoader extends Vue {
   }
 
 
-  $ckH: 1em;
-  $ckW: 0.6em;
+  $ckH: 0.9em;
+  $ckW: 0.5em;
   .checkWrapper{
     position: absolute;
     left:0;
@@ -155,7 +164,7 @@ export default class SpinLoader extends Vue {
     opacity: 1;
     height: $ckH;
     width: $ckW;
-    box-shadow: 2px -2px 0px 0px #FFFFFF;
+    box-shadow: 3px -3px 0px 0px #FFFFFF;
     position: absolute;
     transform-origin: top left;
     top:0;

@@ -3,6 +3,7 @@ import Root from '@/views/Root.vue'
 import Quiz from '@/views/Quiz.vue'
 import Editor from '@/views/Editor.vue'
 import Data from '@/views/Data.vue'
+import Decks from '@/views/Decks.vue'
 import Osce from '@/views/Osce.vue'
 
 export const routes = [
@@ -28,6 +29,11 @@ export const routes = [
         path:"/data",
         name:"data",
         component:Data,
+    },
+    {
+        path:"/decks",
+        name:"Decks",
+        component:Decks,
     },
     // EDITOR FORMS
     {

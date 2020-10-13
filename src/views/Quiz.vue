@@ -274,7 +274,6 @@ export default class Quiz extends Vue {
   padding-bottom: 20px;
   margin-bottom: 20px;
   background: #ffffff;
-  border-bottom: 1px solid $grey;
 }
 
 .buttons{

@@ -1,6 +1,5 @@
 <template>
-  <div class="flag">
-    <h5>NEW FLAG</h5>
+  <div :class="{flag:true,noPadding:noPadding}">
     <slot/>
   </div>
 </template>
@@ -21,6 +20,8 @@ import Input from "@/components/Input.vue";
   emits:[]
 })
 export default class Flag extends Vue {
+
+  @Prop({}) noPadding:boolean;
  
  mounted(){
     this.docEvents();
@@ -48,6 +49,7 @@ export default class Flag extends Vue {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
   .flag{
+    min-width: 100px;
     position: absolute;
     right: 0px;
     top: 0px;
@@ -56,10 +58,15 @@ export default class Flag extends Vue {
     border-radius: $radius;
     box-shadow: $lightShadow;
     background: #fff;
-    z-index: 9;
+    z-index: 999;
     line-height: 1em;
+    color: #000;
     h4{
       padding-bottom: 10px;
+    }
+
+    &.noPadding{
+      padding: 5px 0px;
     }
   }
 </style>

@@ -1,7 +1,7 @@
 <template>
-  <div class="button">
+  <div :class="{button:true, circle:circle, row:row}">
     <Ripple/>
-    <Loader :condition="this.condition || clicked">
+    <Loader :circle="circle" :condition="this.condition || clicked">
       <div class="buttonContent">
         <div v-if="icon" class="icon material-icons">{{icon}}</div>
         {{ text }}
@@ -26,6 +26,8 @@ import Loader from '@/components/spinLoader.vue';
 export default class Button extends Vue {
   @Prop() text:string;
   @Prop() icon:string;
+  @Prop() circle:boolean;
+  @Prop() row:boolean;
   @Prop() condition:Promise<any> | boolean;
   clicked:boolean = false;
 }
@@ -49,14 +51,44 @@ export default class Button extends Vue {
     }
     .buttonContent{
       padding: 5px;
-      height: 1em;
+      height: 20px;
       line-height: 1em;
       white-space: nowrap;
       vertical-align: top;
       .icon{
         display: inline-block;
         vertical-align: top;
-        padding-right: 5px;
+      }
+    }
+
+    &.circle{
+      width: 30px;
+      border-radius: 50%;
+      box-shadow: 0px 0px 0px 1px transparent; 
+      background: transparent;
+      .buttonContent{
+        padding: 0px;
+        .icon{
+          width: 24px;
+          margin:auto;
+        line-height: 26px;
+          text-align: center;
+        }
+      }
+      
+    }
+
+    &.row{
+      display: block;
+      box-shadow: 0px 0px 0px 1px transparent; 
+      border-radius: 0px;
+      height: auto;
+      padding: 5px 10px;
+      &:hover{
+        background: $lightGrey;
+      }
+      *{
+        line-height: 20px;
       }
     }
   }
